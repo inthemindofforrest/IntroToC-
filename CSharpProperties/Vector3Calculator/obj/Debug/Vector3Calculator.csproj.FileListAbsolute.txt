@@ -1,0 +1,15 @@
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\bin\Debug\Vector3Calculator.exe.config
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\bin\Debug\Vector3Calculator.exe
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\bin\Debug\Vector3Calculator.pdb
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator.csprojAssemblyReference.cache
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\MainWindow.g.cs
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\App.g.cs
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator_MarkupCompile.cache
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator_MarkupCompile.lref
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\MainWindow.baml
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator.g.resources
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator.Properties.Resources.resources
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator.csproj.GenerateResource.cache
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator.csproj.CoreCompileInputs.cache
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator.exe
+c:\users\s189069\source\repos\CSharpProperties\Vector3Calculator\obj\Debug\Vector3Calculator.pdb
