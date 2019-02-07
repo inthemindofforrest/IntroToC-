@@ -5,3 +5,10 @@ c:\users\s189069\source\repos\CSharpProperties\CSharpProperties\obj\Debug\CSharp
 c:\users\s189069\source\repos\CSharpProperties\CSharpProperties\obj\Debug\CSharpProperties.csproj.CoreCompileInputs.cache
 c:\users\s189069\source\repos\CSharpProperties\CSharpProperties\obj\Debug\CSharpProperties.exe
 c:\users\s189069\source\repos\CSharpProperties\CSharpProperties\obj\Debug\CSharpProperties.pdb
+C:\Users\s189069\source\repos\IntroToCSharp\CSharpProperties\CSharpProperties\bin\Debug\CSharpProperties.exe.config
+C:\Users\s189069\source\repos\IntroToCSharp\CSharpProperties\CSharpProperties\bin\Debug\CSharpProperties.exe
+C:\Users\s189069\source\repos\IntroToCSharp\CSharpProperties\CSharpProperties\bin\Debug\CSharpProperties.pdb
+C:\Users\s189069\source\repos\IntroToCSharp\CSharpProperties\CSharpProperties\obj\Debug\CSharpProperties.csprojAssemblyReference.cache
+C:\Users\s189069\source\repos\IntroToCSharp\CSharpProperties\CSharpProperties\obj\Debug\CSharpProperties.csproj.CoreCompileInputs.cache
+C:\Users\s189069\source\repos\IntroToCSharp\CSharpProperties\CSharpProperties\obj\Debug\CSharpProperties.exe
+C:\Users\s189069\source\repos\IntroToCSharp\CSharpProperties\CSharpProperties\obj\Debug\CSharpProperties.pdb
