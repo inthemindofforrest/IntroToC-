@@ -102,6 +102,14 @@ namespace WpfTool {
             this.Item_Name = ((System.Windows.Controls.TextBlock)(target));
             return;
             case 3:
+            
+            #line 25 "..\..\MainWindow.xaml"
+            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.CreateItems);
+            
+            #line default
+            #line hidden
+            return;
+            case 4:
             this.Item_Name1 = ((System.Windows.Controls.TextBlock)(target));
             return;
             }

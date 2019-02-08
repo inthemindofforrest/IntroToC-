@@ -22,7 +22,7 @@
                             <Grid Background="#FFE5E5E5">
                                 <ListBox HorizontalAlignment="Left" Height="456" Margin="10,10,0,0" VerticalAlignment="Top" Width="269"/>
                                 <TextBlock x:Name="Item_Name" HorizontalAlignment="Left" Margin="430,10,0,0" TextWrapping="Wrap" Text="Item" VerticalAlignment="Top" Height="31" Width="202" TextAlignment="Center" FontSize="20"/>
-                                <Button Content="Button" HorizontalAlignment="Left" Margin="360,418,0,0" VerticalAlignment="Top" Width="156" Height="48"/>
+                                <Button Content="Button" HorizontalAlignment="Left" Margin="360,418,0,0" VerticalAlignment="Top" Width="156" Height="48" Click="CreateItems"/>
                             </Grid>
                         </TabItem>
                     </TabControl>

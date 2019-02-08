@@ -30,6 +30,11 @@ namespace WpfTool
         {
 
         }
+
+        private void CreateItems(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     public struct Ingrediant
@@ -43,23 +48,29 @@ namespace WpfTool
         enum Machines { Stove, Oven, Microwave}
         string Name;
         string FileLocation;
-        int ComplexityLevel { set { ComplexityLevel = value < 5 && value > 0 ? value : 1; } }//Complexity needs to be 1-5, if not, then it is set to 1 by default
+        int ComplexityLevel { set { ComplexityLevel = value < 5 && value > 0 ? value : value > 5 ? 5 : 1; } }//Complexity needs to be 1-5, if not, then it is set to 1 by default
         List<Ingrediant> TotalIngrediants;
         List<Machines> NeededMachines;
         List<string> Instructions;
 
 
-        public void SaveInstructions()
+        public void LoadInstructions()
         {
             //Reads in file
+            string[] Lines = System.IO.File.ReadAllLines(@"SaveFile.txt");
 
-            //- is Instructions
-            //* is Ingrediants
-            //^ is Machines
-            //! is Name
-            //# is Complexity
+            for(int i = 0; i < Lines.Length; i++)
+            {
+                if(Lines[i].CompareTo("[ingrediants]") == 0)
+                {
+                    while(Lines[i].CompareTo("[end]") != 0)
+                    {
+
+                    }
+                }
+            }
         }
-        public void CreateItems()
+        public void CreateItems(object sender, SelectionChangedEventArgs e)
         {
 
             
