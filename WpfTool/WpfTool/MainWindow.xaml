@@ -20,28 +20,14 @@
                     <TabControl HorizontalAlignment="Left" Height="498" Margin="10,10,0,0" VerticalAlignment="Top" Width="842">
                         <TabItem Header="TabItem">
                             <Grid Background="#FFE5E5E5">
-                                <ListBox HorizontalAlignment="Left" Height="456" Margin="10,10,0,0" VerticalAlignment="Top" Width="269"/>
                                 <TextBlock x:Name="Item_Name" HorizontalAlignment="Left" Margin="430,10,0,0" TextWrapping="Wrap" Text="Item" VerticalAlignment="Top" Height="31" Width="202" TextAlignment="Center" FontSize="20"/>
-                                <Button Content="Button" HorizontalAlignment="Left" Margin="360,418,0,0" VerticalAlignment="Top" Width="156" Height="48" Click="CreateItems"/>
+                                <Button x:Name="LoadButton" Content="Button" HorizontalAlignment="Left" Margin="360,418,0,0" VerticalAlignment="Top" Width="156" Height="48" Click="LoadButton_Click"/>
+                                <ListBox x:Name="Directions" HorizontalAlignment="Left" Height="446" Margin="10,10,0,0" VerticalAlignment="Top" Width="269"/>
+                                <ListBox x:Name="Ingrediants" HorizontalAlignment="Left" Height="415" Margin="632,41,0,0" VerticalAlignment="Top" Width="190"/>
                             </Grid>
                         </TabItem>
                     </TabControl>
                 </Grid>
-            </TabItem>
-            <TabItem Header="TabItem" Margin="-2,-2,-2,-1">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-            <TabItem Header="Create" Margin="-2,-2,-2,-1">
-                <TabControl HorizontalAlignment="Left" Height="498" Margin="10,10,0,0" VerticalAlignment="Top" Width="842">
-                    <TabItem Header="TabItem">
-                        <Grid Background="#FFE5E5E5">
-                            <ListBox HorizontalAlignment="Left" Height="456" Margin="10,10,0,0" VerticalAlignment="Top" Width="269"/>
-                            <TextBlock x:Name="Item_Name1" HorizontalAlignment="Left" Margin="430,10,0,0" TextWrapping="Wrap" Text="Item" VerticalAlignment="Top" Height="31" Width="202" TextAlignment="Center" FontSize="20"/>
-                            <Button Content="Save" HorizontalAlignment="Left" Margin="171,433,0,0" VerticalAlignment="Top" Width="108" Height="33"/>
-                            <Button Content="Cancel" HorizontalAlignment="Left" Margin="10,433,0,0" VerticalAlignment="Top" Width="108" Height="33"/>
-                        </Grid>
-                    </TabItem>
-                </TabControl>
             </TabItem>
         </TabControl>
 
