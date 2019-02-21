@@ -15,127 +15,146 @@ using System.Windows.Shapes;
 
 namespace WpfTool
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
-        Pages pages = new Pages();
+        User CurrentUser = new User();
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        void AttemptLogin()
         {
-            pages.LoadItems();
-            Directions.Items.Clear();
-            for (int i = 0; i < pages.Items[pages.CurrentPage].Instructions.Count; i++)
-                Directions.Items.Add((i + 1) + ") " + pages.Items[pages.CurrentPage].Instructions[i]);
-            Item_Name.Text = pages.Items[pages.CurrentPage].Name;
-            for (int i = 0; i < pages.Items[pages.CurrentPage].TotalIngrediants.Count; i++)
-                Ingrediants.Items.Add(pages.Items[pages.CurrentPage].TotalIngrediants[i].Amount + "x " + pages.Items[pages.CurrentPage].TotalIngrediants[i].Name);
+            //Using the username cycle through the save of the users accounts
+
+            //If the password matches the encrypted user password, Load data
+
+            //If not instruct the user that the password entered was incorrect
         }
+
     }
-
-    public struct Ingrediant
+    public class User
     {
-        public string Name;
-        public float Amount;
-        //public List<Ingrediant> PossibleCombos;
+        public string Name;//Username
+        string PEaNsCsRwYoPrTdED;
+        public int ProfileImage = new int();//Selects from the different profile pictures
 
-        public Ingrediant(string name, float amount)
+        public int Age = new int();//Current User's age, Allows certain games to be blocked
+
+        public List<string> ExeFileLocations = new List<string>();//All of the exe files that the user has put under their belt
+
+        public Settings PlayerSettings = new Settings();//Settings set to this player
+
+        public int IndexNumber = new int();//Number to retrieve the Username and Password
+
+
+        System.DateTime CreationDate = new System.DateTime();//Date in which the user created this account
+        public System.DateTime AccountCreationDate { get { return CreationDate; } }//Allows you to get the creation date, but cannot set it
+
+        //INITILIZER:
+        public User()
         {
-            Name = name;
-            Amount = amount;
+            //Starts the user on a guest account
+            Name = "Guest";
+            ProfileImage = 0;//Default profile image
+            Age = -1;//Sets the age to -1 to bypass the age restriction
+            CreationDate = System.DateTime.Now;//Sets the CreationDate to now
+            LoadData(true);//Loads the data using Guest
         }
-    }
-    public struct Item
-    {
-        enum Machines { Stove, Oven, Microwave}
-        public string Name;
-        public int ComplexityLevel; /*{ set { ComplexityLevel = value < 5 && value > 0 ? value : value > 5 ? 5 : 1; } }*///Complexity needs to be 1-5, if not, then it is set to 1 by default
-        public List<Ingrediant> TotalIngrediants;
-        List<Machines> NeededMachines;
-        public List<string> Instructions;
+
+        //FUNCTIONS:
 
 
-        public void LoadInstructions()
+        public bool LoadData(bool Guest)
         {
-            //Reads in file
-            string[] Lines = System.IO.File.ReadAllLines(@"SaveFile.txt");
+            string SaveFileLocation = @"SaveFile.txt";//Location where the save file is stored
 
-            for(int i = 0; i < Lines.Length; i++)
-            {
-                if(Lines[i].CompareTo("[ingrediants]") == 0)
-                {
-                    while(Lines[++i].CompareTo("[end]") != 0)
-                    {
+            if (!System.IO.File.Exists(SaveFileLocation))
+                return false;//return false if the data for the user could not be read
+                             //Instruct the user to either continue with corrupted data and overide it when it is saved
+                             //Or try to find the user data again
+            else
+                System.IO.File.Decrypt(SaveFileLocation);//DECRYPTS it so it can quickly read it
 
-                    }
-                }
-            }
-        }
-        public void CreateItems(object sender, SelectionChangedEventArgs e)
-        {
 
-            
-                
-        }
-        //void AddIngrediantsRandomally()
-        //{
-        //    Random RandomNumber = new Random();
-        //    int rand = RandomNumber.Next(0, 3);
-        //    for (int i = 0; i < rand; i++)
-        //        TotalIngrediants.Add(TotalIngrediants[TotalIngrediants.Count - 1].PossibleCombos[RandomNumber.Next(0, TotalIngrediants[TotalIngrediants.Count - 1].PossibleCombos.Count)]);
-        //}
-    }
+            string[] Lines = System.IO.File.ReadAllLines(SaveFileLocation);//Retrieve the lines from the text file
 
-    public class Pages
-    {
-        public List<Item> Items = new List<Item>();
-        public int PageCount { get { return Items.Count; } }
-        public int CurrentPage = 0;
-        public void LoadItems()
-        {
-            //Reads in file
-            string[] Lines = System.IO.File.ReadAllLines(@"SaveFile.txt");
-
+            //Load data and then return true
             for (int i = 0; i < Lines.Length; i++)
             {
-                if (Lines[i].CompareTo("[Item]") == 0)
+                //Check to see if the account being loaded is a guest account
+                if ((!Guest && Lines[i].CompareTo("#" + this.Name) == 0) || (Guest && Lines[i].CompareTo("!Guest") == 0))
                 {
-                    Item tmpItem = new Item();
-                    tmpItem.Instructions = new List<string>();
-                    tmpItem.TotalIngrediants = new List<Ingrediant>();
+                    if (!Guest)
+                        IndexNumber = i;
+                    //Check if the line is not the end of the account
                     while (Lines[++i].CompareTo("[end]") != 0)
                     {
-                        switch (Lines[i].Split('[',']')[1])
+                        //Checks for password line
+                        if (Lines[i][0].CompareTo('*') == 0)//Skips the password of the user
                         {
-                            case "Name"://Name of Item
-                                tmpItem.Name = Lines[i].Split(']')[1];
-                                break;
-                            case "Complexity"://Complexity Level
-                                int.TryParse(Lines[i].Split('=')[1], out int tmpNumber);
-                                if (tmpNumber > 5) tmpNumber = 5;
-                                else if (tmpNumber < 1) tmpNumber = 1;
-                                tmpItem.ComplexityLevel = tmpNumber;
-                                break;
-                            case "Direction"://Instructions
-                                tmpItem.Instructions.Add(Lines[i].Split(']')[1]);
-                                break;
-                            case "Ingrediant"://Ingrediants
-                                float.TryParse(Lines[i].Split('=')[1], out float AmountNumber);
-                                tmpItem.TotalIngrediants.Add(new Ingrediant(Lines[i].Split(']','=')[1], AmountNumber));
-                                break;
+                            PEaNsCsRwYoPrTdED = Lines[i];
+                            continue;
+                        }
 
+                        //Adds the data to the ExeFileLocations
+                        this.ExeFileLocations.Add(Lines[i]);//Adds the 
+                    }
+
+                    //Once it is the end, Escape
+                    break;
+                }
+                else
+                {
+                    //Cannot find the players account info
+                    if (Guest)
+                    {
+                        //BAD, PANICK..... SOMETHING FUCKED UP!!!
+                    }
+                    else
+                    {
+                        //Don't panick. I promise. You will just load the guest account and override the users settings
+                        if (Lines[i].CompareTo("!Guest") == 0)
+                        {
+
+                            //Check if the line is not the end of the account
+                            while (Lines[++i].CompareTo("[END]") != 0)
+                            {
+                                //Adds the data to the ExeFileLocations
+                                this.ExeFileLocations.Add(Lines[i]);//Adds the 
+                            }
+
+                            //Once it is the end, Escape
+                            break;
                         }
                     }
-                    Items.Add(tmpItem);
                 }
             }
+            System.IO.File.Encrypt(SaveFileLocation);//Keeps the file ENCRYPTED and safe
+            //Lines[this.IndexNumber + 1] = EncryptPW(Lines[this.IndexNumber + 1]);
+            //Lines[this.IndexNumber + 1] = DecryptPW(Lines[this.IndexNumber + 1]);
+            return true;
+        }
+
+        string EncryptPW(string CurrentForm)
+        {
+            string newstring = "*";//Starts a string with the password character
+            for (int i = 1; i < CurrentForm.Length; i++)//Loops through the password
+                newstring += (char)((int)CurrentForm[i] + this.IndexNumber + 1 /*Offset*/ + this.CreationDate.Second);//Adds the encryption
+            return newstring;//Returns the new string which is the password
+        }
+        string DecryptPW(string CurrentForm)
+        {
+            string newstring = "*";//Starts a string with the password character
+            for (int i = 1; i < CurrentForm.Length; i++)//Loops through the password
+                newstring += (char)((int)CurrentForm[i] - (this.IndexNumber + 1 /*Offset*/ + this.CreationDate.Second));//Reverses the encryption
+            return newstring;//Returns the new string which is the password
         }
     }
-
-
+    public class Settings
+    {
+        public enum Theme { Dark, Light, Blue};
+        public Theme CurrentTheme;
+    }
 }

@@ -14,22 +14,6 @@
             <ColumnDefinition Width="662*"/>
             <ColumnDefinition Width="99*"/>
         </Grid.ColumnDefinitions>
-        <TabControl HorizontalAlignment="Left" Height="550" Margin="10,10,0,0" VerticalAlignment="Top" Width="872" Grid.ColumnSpan="4">
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5">
-                    <TabControl HorizontalAlignment="Left" Height="498" Margin="10,10,0,0" VerticalAlignment="Top" Width="842">
-                        <TabItem Header="TabItem">
-                            <Grid Background="#FFE5E5E5">
-                                <TextBlock x:Name="Item_Name" HorizontalAlignment="Left" Margin="430,10,0,0" TextWrapping="Wrap" Text="Item" VerticalAlignment="Top" Height="31" Width="202" TextAlignment="Center" FontSize="20"/>
-                                <Button x:Name="LoadButton" Content="Button" HorizontalAlignment="Left" Margin="360,418,0,0" VerticalAlignment="Top" Width="156" Height="48" Click="LoadButton_Click"/>
-                                <ListBox x:Name="Directions" HorizontalAlignment="Left" Height="446" Margin="10,10,0,0" VerticalAlignment="Top" Width="269"/>
-                                <ListBox x:Name="Ingrediants" HorizontalAlignment="Left" Height="415" Margin="632,41,0,0" VerticalAlignment="Top" Width="190"/>
-                            </Grid>
-                        </TabItem>
-                    </TabControl>
-                </Grid>
-            </TabItem>
-        </TabControl>
 
     </Grid>
 </Window>

@@ -1,9 +1,5 @@
-﻿[Item]
-[Name]myNameis
-[Complexity]=16
-[Direction]You need to do part A.
-[Direction]You need to do Part B and C with D included
-[Ingrediant]Banana=5
-[Ingrediant]Chicken=10
-[Ingrediant]OtherFood=1
+﻿!Guest
+FILELOCATION_01
+FILELOCATION_02
+FILELOCATION_03
 [end]
