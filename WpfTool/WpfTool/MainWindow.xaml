@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900
         ">
+
     <Grid x:Name="GridSystem">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="32*"/>
@@ -14,6 +15,11 @@
             <ColumnDefinition Width="662*"/>
             <ColumnDefinition Width="99*"/>
         </Grid.ColumnDefinitions>
+        <TextBlock x:Name="NameField" Grid.Column="1" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="GUEST" VerticalAlignment="Top" Height="39" Width="254" Grid.ColumnSpan="2" FontSize="20" TextAlignment="Center"/>
+        <Button x:Name="SignInOut" Content="Sign In" Grid.Column="3" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="79" Height="39" Click="SignInOut_Click"/>
+        <Button Grid.ColumnSpan="2" Content="Button" Grid.Column="2" HorizontalAlignment="Left" Margin="537,450,0,0" VerticalAlignment="Top" Width="133" Height="45" Click="RunApplication"/>
+        <ListBox x:Name="ListOfExe" Grid.Column="2" HorizontalAlignment="Left" Height="391" Margin="431,54,0,0" VerticalAlignment="Top" Width="231"/>
+        <Image x:Name="UserImage" Grid.Column="1" HorizontalAlignment="Left" Height="240" Margin="10,54,0,0" VerticalAlignment="Top" Width="244" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

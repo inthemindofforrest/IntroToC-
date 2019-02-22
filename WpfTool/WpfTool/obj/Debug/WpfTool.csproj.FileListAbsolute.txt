@@ -28,3 +28,7 @@ C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\WpfTool.cs
 C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\WpfTool.csproj.CoreCompileInputs.cache
 C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\WpfTool.exe
 C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\WpfTool.pdb
+C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\SignIn.g.cs
+C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\SignIn.baml
+C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\NewUser.g.cs
+C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\NewUser.baml
