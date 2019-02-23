@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\App.xaml
-3779935751
+4-36172035
 
-11-846941755
+12-1693423840
 17-585140955
-MainWindow.xaml;NewUser.xaml;SignIn.xaml;
+ErrorWindow.xaml;MainWindow.xaml;NewUser.xaml;SignIn.xaml;
 
-True
+False
 

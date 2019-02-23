@@ -6,20 +6,41 @@
         xmlns:local="clr-namespace:WpfTool"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900
-        ">
+        " Closing="Window_Closing">
 
     <Grid x:Name="GridSystem">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="32*"/>
-            <ColumnDefinition Width="99*"/>
-            <ColumnDefinition Width="662*"/>
-            <ColumnDefinition Width="99*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="190*"/>
+            <ColumnDefinition Width="25*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="NameField" Grid.Column="1" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="GUEST" VerticalAlignment="Top" Height="39" Width="254" Grid.ColumnSpan="2" FontSize="20" TextAlignment="Center"/>
-        <Button x:Name="SignInOut" Content="Sign In" Grid.Column="3" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="79" Height="39" Click="SignInOut_Click"/>
-        <Button Grid.ColumnSpan="2" Content="Button" Grid.Column="2" HorizontalAlignment="Left" Margin="537,450,0,0" VerticalAlignment="Top" Width="133" Height="45" Click="RunApplication"/>
-        <ListBox x:Name="ListOfExe" Grid.Column="2" HorizontalAlignment="Left" Height="391" Margin="431,54,0,0" VerticalAlignment="Top" Width="231"/>
-        <Image x:Name="UserImage" Grid.Column="1" HorizontalAlignment="Left" Height="240" Margin="10,54,0,0" VerticalAlignment="Top" Width="244" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="NameField" Grid.Column="1" HorizontalAlignment="Left" Margin="0,15,0,0" TextWrapping="Wrap" Text="GUEST" VerticalAlignment="Top" Height="39" Width="166" FontSize="20" TextAlignment="Center"/>
+        <Button x:Name="SignInOut" Content="Sign In" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="79" Height="39" Click="SignInOut_Click"/>
+        <Button Content="PLAY" Grid.Column="1" HorizontalAlignment="Left" Margin="627,450,0,0" VerticalAlignment="Top" Width="133" Height="45" Click="RunApplication" FontSize="36" BorderBrush="#FF0E0000">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FF22FF00" Offset="0"/>
+                    <GradientStop Color="#FF149300" Offset="0.673"/>
+                    <GradientStop Color="#FF16A200" Offset="0.317"/>
+                    <GradientStop Color="#FF0E6A00" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <ListBox x:Name="ListOfExe" Grid.Column="1" HorizontalAlignment="Left" Height="391" Margin="529,59,0,0" VerticalAlignment="Top" Width="231"/>
+        <Image x:Name="UserImage" Grid.Column="1" HorizontalAlignment="Left" Height="152" Margin="10,54,0,0" VerticalAlignment="Top" Width="156"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="234" Margin="10,261,0,0" VerticalAlignment="Top" Width="440"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="39" Margin="10,15,0,0" VerticalAlignment="Top" Width="156"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="147" Margin="10,59,0,0" VerticalAlignment="Top" Width="156"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="391" Margin="529,59,0,0" VerticalAlignment="Top" Width="231"/>
+        <TextBlock TextWrapping="Wrap" Text="Add a Program:" Margin="10,261,658,289" Grid.Column="1"/>
+        <TextBlock TextWrapping="Wrap" Text="Application Path:" Margin="10,306,658,244" Grid.Column="1"/>
+        <TextBlock TextWrapping="Wrap" Text="Application file:" Margin="10,352,658,198" Grid.Column="1"/>
+        <TextBlock TextWrapping="Wrap" Text="Nick Name:" Margin="10,408,658,142" Grid.Column="1"/>
+        <TextBox x:Name="NewPath" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="123,306,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="305" GotFocus="ClearText"/>
+        <TextBox x:Name="NewExe" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="123,352,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="305" GotFocus="ClearText"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="123,404,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="305" GotFocus="ClearText"/>
+        <Button Content="Confirm" Grid.Column="1" HorizontalAlignment="Left" Margin="186,450,0,0" VerticalAlignment="Top" Width="76" Click="SubmitApplication"/>
+        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="219,265,0,0" VerticalAlignment="Top" Width="43" Click="FileSelection"/>
 
     </Grid>
 </Window>

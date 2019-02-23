@@ -13,12 +13,14 @@
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="UserName" VerticalAlignment="Top" Height="41" Width="124" TextAlignment="Center" FontSize="24"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,68,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Height="41" Width="124" TextAlignment="Center" FontSize="24"/>
-        <TextBox x:Name="Username" HorizontalAlignment="Left" Height="41" Margin="139,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="257" FontSize="24" Text="Forrest" GotFocus="ClearError"/>
+        <TextBox x:Name="Username" HorizontalAlignment="Left" Height="41" Margin="139,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="257" FontSize="24" GotFocus="ClearError"/>
         <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Left" Margin="281,150,0,0" VerticalAlignment="Top" Width="115" Height="43" Click="AttemptLogin"/>
-        <PasswordBox x:Name="Password" HorizontalAlignment="Left" Margin="139,68,0,0" VerticalAlignment="Top" Height="42" Width="257" FontSize="24" Password="Password" GotFocus="ClearError"/>
+        <PasswordBox x:Name="Password" HorizontalAlignment="Left" Margin="139,68,0,0" VerticalAlignment="Top" Height="42" Width="230" FontSize="24" GotFocus="ClearError"/>
         <Button Content="New User?" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top" Width="116" Height="22" Click="NewUser"/>
         <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="164,150,0,0" VerticalAlignment="Top" Width="112" Height="43" Click="CancelApp"/>
         <TextBlock x:Name="ErrorMessage" HorizontalAlignment="Left" Margin="139,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="257" Height="30" TextAlignment="Center" Foreground="Red"/>
+        <CheckBox Content="" HorizontalAlignment="Left" Margin="375,81,0,0" VerticalAlignment="Top" Checked="ShowPassword" Unchecked="HidePassword"/>
+        <TextBox x:Name="Unhidden" HorizontalAlignment="Left" Height="41" Margin="139,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" FontSize="24"/>
 
     </Grid>
 </Window>

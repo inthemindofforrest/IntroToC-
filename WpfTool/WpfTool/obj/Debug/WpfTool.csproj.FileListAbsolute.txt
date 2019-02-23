@@ -32,3 +32,5 @@ C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\SignIn.g.c
 C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\SignIn.baml
 C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\NewUser.g.cs
 C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\NewUser.baml
+C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\ErrorWindow.g.cs
+C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\obj\Debug\ErrorWindow.baml

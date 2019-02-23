@@ -23,7 +23,7 @@ namespace WpfTool
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
-            
+            Unhidden.Visibility = Visibility.Hidden;
         }
         void AttemptLogin(object sender, RoutedEventArgs e)
         {
@@ -32,14 +32,17 @@ namespace WpfTool
 
             string[] Lines = System.IO.File.ReadAllLines(SaveFileLocation);//Retrieve the lines from the text file
 
+            Password.Password = Unhidden.Text;
+
+
             //Using the username cycle through the save of the users accounts
             for (int i = 0; i < Lines.Length; i++)
             {
-                if (Lines[i].CompareTo("#" + Username.Text) == 0)//If the username entered is a username
+                if (Lines[i].ToLower().CompareTo("#" + Username.Text.ToLower()) == 0)//If the username entered is a username
                 {
 
                     for (int j = i; j < Lines.Length; j++)
-                        if (Lines[j][0] == '$')
+                        if (Lines[j].Length != 0 && Lines[j][0] == '$')
                             DateTime.TryParse(Lines[j].Split('$')[1], out Controller.CurrentUser.CreationDate);
 
 
@@ -52,6 +55,10 @@ namespace WpfTool
                     //If the password matches the encrypted user password, Load data
                     if (Password.Password.CompareTo(CorrectPass) == 0)//If the password entered is the password of the user
                     {
+                        Controller.CurrentUser = new User(1);
+                        for (int j = i; j < Lines.Length; j++)
+                            if (Lines[j].Length != 0 && Lines[j][0] == '$')
+                                DateTime.TryParse(Lines[j].Split('$')[1], out Controller.CurrentUser.CreationDate);
                         Controller.CurrentUser.Name = "";//Reset the users name
                         for (int j = 1; j < Lines[i].Length; j++)//Change the users name to be the name of the user
                             Controller.CurrentUser.Name += Lines[i][j];
@@ -83,6 +90,18 @@ namespace WpfTool
         private void ClearError(object sender, RoutedEventArgs e)
         {
             ErrorMessage.Text = "";
+        }
+        private void ShowPassword(object sender, RoutedEventArgs e)
+        {
+            Unhidden.Text = Password.Password;
+            Unhidden.Visibility = Visibility.Visible;
+            Password.Visibility = Visibility.Hidden;
+        }
+        private void HidePassword(object sender, RoutedEventArgs e)
+        {
+            Password.Password = Unhidden.Text;
+            Unhidden.Visibility = Visibility.Hidden;
+            Password.Visibility = Visibility.Visible;
         }
     }
 }

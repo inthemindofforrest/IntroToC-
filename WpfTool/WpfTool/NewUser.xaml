@@ -12,7 +12,7 @@
         <TextBlock x:Name="LastNameText" HorizontalAlignment="Left" Margin="10,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Last Name" FontSize="24" TextAlignment="Center"/>
         <TextBlock x:Name="FirstPasswordText" HorizontalAlignment="Left" Margin="10,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Password" FontSize="24" TextAlignment="Center"/>
         <TextBlock x:Name="SecondPasswordText" HorizontalAlignment="Left" Margin="10,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Password" FontSize="24" TextAlignment="Center"/>
-        <TextBox x:Name="UsernameField" HorizontalAlignment="Left" Height="38" Margin="143,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20" LostFocus="UsernameField_LostFocus"/>
+        <TextBox x:Name="UsernameField" HorizontalAlignment="Left" Height="38" Margin="143,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
         <TextBox x:Name="FirstNameField" HorizontalAlignment="Left" Height="38" Margin="143,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
         <TextBox x:Name="LastNameField" HorizontalAlignment="Left" Height="38" Margin="143,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
         <TextBox x:Name="FirstPWField" HorizontalAlignment="Left" Height="38" Margin="143,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
