@@ -19,16 +19,148 @@ namespace WpfTool
     /// </summary>
     public partial class NewUser : Window
     {
+        List<List<UIElement>> Pages = new List<List<UIElement>>();
+
+        public int CurrentPage = 1;
+
+        int Theme = 0;
+
         bool IsAlreadyName = false;
-        public NewUser()
+
+        bool GetPageOne()
+        {
+            List<UIElement> Page = new List<UIElement>();//Creates a list of UIElements
+
+            //Adds all the page elements to this page
+            Page.Add(UsernameField);
+            Page.Add(UserNameText);
+
+            Page.Add(FirstPasswordText);
+            Page.Add(SecondPasswordText);
+
+            Page.Add(FirstPWField);
+            Page.Add(SecondPWField);
+
+            Page.Add(ShownPasswordOne);
+            Page.Add(ShownPasswordTwo);
+
+            Page.Add(FirstNameText);
+            Page.Add(FirstNameField);
+
+            Page.Add(LastNameText);
+            Page.Add(LastNameField);
+
+            Page.Add(ShowPasswords);
+            Page.Add(NextButton);
+
+            //Add the page to the list of pages
+            Pages.Add(Page);
+
+            return true;
+        }
+
+        bool GetPageTwo()
+        {
+            List<UIElement> Page = new List<UIElement>();
+
+            Page.Add(ThemeText);
+            Page.Add(BlackTheme);
+            Page.Add(WhiteTheme);
+            Page.Add(BlueTheme);
+
+            Page.Add(NextButton);
+            Page.Add(BackButton);
+
+            Pages.Add(Page);
+
+            return true;
+        }
+
+        bool GetPageThree()
+        {
+            List<UIElement> Page = new List<UIElement>();
+
+            Page.Add(TermsOfAgreement);
+            Page.Add(BackButton);
+            Page.Add(SubmitButton);
+
+            Pages.Add(Page);
+
+            return true;
+        }
+
+        bool VisualizePage(Visibility VisibilityLevel, int PageNumber)
+        {
+            if (PageNumber == 1 && GetPageOne() || PageNumber == 2 && GetPageTwo() || PageNumber == 3 && GetPageThree())//Gets all of the elements in the first page
+            {
+                foreach (UIElement item in Pages[PageNumber])//Finds each UIElement in the page list
+                    item.Visibility = VisibilityLevel;//Sets each element to the visibility asked for above
+                return true;
+            }
+            return false;
+        }
+
+        bool VisualizePage(bool ResetAllElse)
+        {
+            if (ResetAllElse)
+            {
+                if (GetPageOne() && GetPageTwo() && GetPageThree())//Loads all the pages
+                {
+                    foreach(List<UIElement> page in Pages)//Gets the list of all the pages in the Pages list
+                        foreach (UIElement item in page)//Finds each UIElement in the page list
+                            item.Visibility = Visibility.Hidden;//Sets each element to the visibility asked for above
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        bool VisualizePage(bool ResetAllElse, int ExceptThis)
+        {
+            if (ResetAllElse)
+            {
+                List<UIElement> PageToDisplay = new List<UIElement>();
+                if (GetPageOne() && GetPageTwo() && GetPageThree())
+                {
+                    for (int i = 0; i < Pages.Count; i++)//Goes through each page
+                        if (i + 1 == ExceptThis)//Checks if the page is the same as the programmer entered page
+                            PageToDisplay = Pages[i];//Saves it to be displayed last
+                        else
+                            foreach (UIElement item in Pages[i])//Finds each UIElement in the page list
+                                item.Visibility = Visibility.Hidden;//Sets each element to the visibility Hidden
+
+                    foreach (UIElement item in PageToDisplay)//Finds each UIElement in the page list
+                        item.Visibility = Visibility.Visible;//Sets each element to the visibility Visible
+
+                    return true;//Yay it made it through all the pages
+                }
+            }
+            return false;//Welp....
+        }
+
+        public NewUser()//MAIN
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
-            
+            ShownPasswordOne.Visibility = Visibility.Hidden;
+            ShownPasswordTwo.Visibility = Visibility.Hidden;
+            UpdatePage();
         }
         void CancelApp(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+        void NextPage(object sender, RoutedEventArgs e)
+        {
+            if(CurrentPage < Pages.Count)
+                CurrentPage++;//Moves to the next page
+            UpdatePage();
+        }
+        void BackPage(object sender, RoutedEventArgs e)
+        {
+            if(CurrentPage > 1)
+                CurrentPage--;//Moves Back a page
+            UpdatePage();
         }
         void Submit(object sender, RoutedEventArgs e)
         {
@@ -39,24 +171,41 @@ namespace WpfTool
 
                 List<string> NewUserCreation = new List<string>();
                 NewUserCreation.Add("#" + UsernameField.Text);
-                NewUserCreation.Add(Controller.CurrentUser.EncryptPW(FirstPWField.Text));
+                NewUserCreation.Add(Controller.CurrentUser.EncryptPW(FirstPWField.Password));
                 NewUserCreation.Add("@" + FirstNameField.Text + "," + LastNameField.Text);
                 NewUserCreation.Add("$" + DateTime.Now.ToString());
                 NewUserCreation.Add("&" + Controller.CurrentUser.ProfileImage);
-                NewUserCreation.Add("^" + (int)Controller.CurrentUser.PlayerSettings.CurrentTheme);
+                NewUserCreation.Add("^" + Theme);
 
                 NewUserCreation.Add("[end]");
 
-                if (FirstPWField.Text.Length > 8 && FirstPWField.Text == SecondPWField.Text)
+                if (FirstPWField.Password.Length > 8 && FirstPWField.Password == SecondPWField.Password)
                     if (!IsAlreadyName)
                         if (FirstNameField.Text.Length > 0 && LastNameField.Text.Length > 0)
                         {
                             System.IO.File.AppendAllLines(SaveFileLocation, NewUserCreation);
                             this.Close();
                         }
+
+                Controller.CurrentUser.errorMessage = "Account could not be created. Please edit current proccess and try again.";
+                Window Errrrrrrr = new ErrorWindow();
+                Errrrrrrr.ShowDialog();
             }
         }
 
+
+        void UpdatePage()
+        {
+            if (VisualizePage(true, CurrentPage))
+                return;
+            else
+            //Shouldnt Get here
+            {
+                Controller.CurrentUser.errorMessage = "Page \"" + CurrentPage + "\" does not exist";
+                Window Errrrrrrrrrrrrrr = new ErrorWindow();
+                Errrrrrrrrrrrrrr.ShowDialog();
+            }
+        }
         private bool CheckForUserNameValitity()
         { 
             Controller.CurrentUser.Name = UsernameField.Text;
@@ -97,6 +246,50 @@ namespace WpfTool
                 ErrorMessage.Text = "";
             }
             return true;
+        }
+
+        private void ShowPasswordsChecked(object sender, RoutedEventArgs e)
+        {
+            ShownPasswordOne.Visibility = Visibility.Visible;
+            ShownPasswordTwo.Visibility = Visibility.Visible;
+
+            FirstPWField.Visibility = Visibility.Hidden;
+            SecondPWField.Visibility = Visibility.Hidden;
+
+            ShownPasswordOne.Text = FirstPWField.Password;
+            ShownPasswordTwo.Text = SecondPWField.Password;
+        }
+
+        private void ShowPasswordsUnChecked(object sender, RoutedEventArgs e)
+        {
+            ShownPasswordOne.Visibility = Visibility.Hidden;
+            ShownPasswordTwo.Visibility = Visibility.Hidden;
+
+            FirstPWField.Visibility = Visibility.Visible;
+            SecondPWField.Visibility = Visibility.Visible;
+
+            FirstPWField.Password = ShownPasswordOne.Text;
+            SecondPWField.Password = ShownPasswordTwo.Text;
+        }
+
+        private void ShownPasswordUpdater(object sender, RoutedEventArgs e)
+        {
+            FirstPWField.Password = ShownPasswordOne.Text;
+            SecondPWField.Password = ShownPasswordTwo.Text;
+        }
+
+        //Selecting Theme style
+        private void DarkThemeSelect(object sender, RoutedEventArgs e)
+        {
+            Theme = 0;
+        }
+        private void LightThemeSelect(object sender, RoutedEventArgs e)
+        {
+            Theme = 1;
+        }
+        private void BlueThemeSelect(object sender, RoutedEventArgs e)
+        {
+            Theme = 2;
         }
     }
 }

@@ -6,19 +6,54 @@
         xmlns:local="clr-namespace:WpfTool"
         mc:Ignorable="d"
         Title="NewUser" Height="492.382" Width="364.958">
-    <Grid>
-        <TextBlock x:Name="UserNameText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="UserName" FontSize="24" TextAlignment="Center" Margin="9,9,0,0"/>
-        <TextBlock x:Name="FirstNameText" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="First Name" FontSize="24" TextAlignment="Center"/>
-        <TextBlock x:Name="LastNameText" HorizontalAlignment="Left" Margin="10,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Last Name" FontSize="24" TextAlignment="Center"/>
-        <TextBlock x:Name="FirstPasswordText" HorizontalAlignment="Left" Margin="10,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Password" FontSize="24" TextAlignment="Center"/>
-        <TextBlock x:Name="SecondPasswordText" HorizontalAlignment="Left" Margin="10,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Password" FontSize="24" TextAlignment="Center"/>
-        <TextBox x:Name="UsernameField" HorizontalAlignment="Left" Height="38" Margin="143,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
-        <TextBox x:Name="FirstNameField" HorizontalAlignment="Left" Height="38" Margin="143,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
-        <TextBox x:Name="LastNameField" HorizontalAlignment="Left" Height="38" Margin="143,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
-        <TextBox x:Name="FirstPWField" HorizontalAlignment="Left" Height="38" Margin="143,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
-        <TextBox x:Name="SecondPWField" HorizontalAlignment="Left" Height="38" Margin="143,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20"/>
-        <Button Content="Submit" HorizontalAlignment="Left" Margin="132,419,0,0" VerticalAlignment="Top" Width="97" Click="Submit" Height="33"/>
+    <Grid x:Name="Page1">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <TextBlock x:Name="UserNameText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="UserName" FontSize="24" TextAlignment="Center" Margin="9,9,0,0" Visibility="Hidden"/>
+        <TextBlock x:Name="FirstNameText" HorizontalAlignment="Left" Margin="10,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="First Name" FontSize="24" TextAlignment="Center" Visibility="Hidden"/>
+        <TextBlock x:Name="LastNameText" HorizontalAlignment="Left" Margin="10,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Last Name" FontSize="24" TextAlignment="Center" Visibility="Hidden"/>
+        <TextBlock x:Name="FirstPasswordText" HorizontalAlignment="Left" Margin="10,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Password" FontSize="24" TextAlignment="Center" Visibility="Hidden"/>
+        <TextBlock x:Name="SecondPasswordText" HorizontalAlignment="Left" Margin="10,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="128" Text="Password" FontSize="24" TextAlignment="Center" Visibility="Hidden"/>
+        <TextBox x:Name="UsernameField" HorizontalAlignment="Left" Height="38" Margin="143,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20" Visibility="Hidden"/>
+        <TextBox x:Name="FirstNameField" HorizontalAlignment="Left" Height="38" Margin="143,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20" Visibility="Hidden"/>
+        <TextBox x:Name="LastNameField" HorizontalAlignment="Left" Height="38" Margin="143,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="20" Visibility="Hidden"/>
         <TextBlock x:Name="ErrorMessage" HorizontalAlignment="Left" Margin="143,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" Height="21" TextAlignment="Center" Foreground="Red"/>
+        <CheckBox x:Name="ShowPasswords" Content="Show Passwords" HorizontalAlignment="Left" Margin="143,282,0,0" VerticalAlignment="Top" Height="38" Width="204" FontSize="24" Checked="ShowPasswordsChecked" Unchecked="ShowPasswordsUnChecked" Visibility="Hidden"/>
+        <TextBox x:Name="ShownPasswordOne" HorizontalAlignment="Left" Height="43" Margin="143,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="24" LostFocus="ShownPasswordUpdater" Visibility="Hidden"/>
+        <TextBox x:Name="ShownPasswordTwo" HorizontalAlignment="Left" Height="43" Margin="143,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" FontSize="24" LostFocus="ShownPasswordUpdater" Visibility="Hidden"/>
+        <PasswordBox x:Name="FirstPWField" HorizontalAlignment="Left" Margin="143,196,0,0" VerticalAlignment="Top" Width="204" Height="43" FontSize="24" Visibility="Hidden"/>
+        <PasswordBox x:Name="SecondPWField" HorizontalAlignment="Left" Margin="143,239,0,0" VerticalAlignment="Top" Width="204" Height="43" FontSize="24" Visibility="Hidden"/>
+        <Button x:Name="NextButton" Content="Next" HorizontalAlignment="Left" Margin="215,403,0,0" VerticalAlignment="Top" Width="75" Click="NextPage" Height="49"/>
+        <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="62,403,0,0" VerticalAlignment="Top" Width="75" Click="BackPage" Height="49"/>
+        <TextBlock x:Name="ThemeText" HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="Theme:" VerticalAlignment="Top" Height="55" Width="133" FontSize="36"/>
+        <Button x:Name="BlackTheme" Content="" HorizontalAlignment="Left" Margin="150,53,0,0" VerticalAlignment="Top" Width="41" Height="41" Click="DarkThemeSelect">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="1"/>
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="WhiteTheme" Content="" HorizontalAlignment="Left" Margin="215,53,0,0" VerticalAlignment="Top" Width="41" Height="41" Background="White" Click="LightThemeSelect"/>
+        <Button x:Name="BlueTheme" Content="" HorizontalAlignment="Left" Margin="280,53,0,0" VerticalAlignment="Top" Width="41" Height="41" Click="BlueThemeSelect">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FF0046FF" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="1"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="1"/>
+                    <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <TextBlock x:Name="ThemeText_Copy" HorizontalAlignment="Left" Margin="10,112,0,0" TextWrapping="Wrap" Text="Picture:" VerticalAlignment="Top" Height="55" Width="133" FontSize="36" Visibility="Hidden"/>
+        <Button x:Name="SubmitButton" Content="Submit" HorizontalAlignment="Left" Margin="212,419,0,0" VerticalAlignment="Top" Width="78" Height="33" Click="Submit"/>
+        <TextBlock x:Name="TermsOfAgreement" HorizontalAlignment="Left" Margin="9,10,0,0" TextWrapping="Wrap" Text="agreement that includes the terms, the rules and the guidelines of acceptable behavior and other useful sections to which users must agree in order to use or access your website and mobile app." VerticalAlignment="Top" Height="366" Width="338" FontSize="36"/>
 
 
 

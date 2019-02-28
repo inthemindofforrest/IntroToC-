@@ -29,7 +29,7 @@ namespace WpfTool
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;//Makes the window not resizable
-            AddToListOfExe();//Update the Listbox with the correct data
+            DisplayListOfExe();//Update the Listbox with the correct data
         }
         private void SignInOut_Click(object sender, RoutedEventArgs e)
         {
@@ -41,6 +41,7 @@ namespace WpfTool
 
                 if (Controller.CurrentUser.Age != -1)//If not a guest
                 {
+                    UpdateTheme();
                     SignInOut.Content = "Sign Out";//Make the button be a Signout
                     NameField.Text = Controller.CurrentUser.Name;//Sets the display name to the users name
                     UserImage.Source = new BitmapImage(new Uri(Controller.CurrentUser.ProfileImage + ".png", UriKind.Relative));//Image stuff.... not sure if it works yet
@@ -67,7 +68,33 @@ namespace WpfTool
                     ListOfExe.Items.Add(Controller.CurrentUser.ExeNames[i]);//Populate the list with the guest apps
             }
         }
+        void UpdateTheme()
+        {
+            LinearGradientBrush MainBrush = new LinearGradientBrush();
+            LinearGradientBrush SecondBrush = new LinearGradientBrush();
+            switch (Controller.CurrentUser.PlayerSettings.CurrentTheme)
+            {
+                case Settings.Theme.Dark:
+                    DoDark:
+                    MainBrush = new LinearGradientBrush(Color.FromRgb(0,0,0), Color.FromRgb(255,255,255), new Point(0.5, 0), new Point(0.5, 1));
+                    SecondBrush = new LinearGradientBrush(Color.FromRgb(205, 205, 205), Color.FromRgb(50, 50, 50), new Point(0.5, 0), new Point(0.5, 1));
+                    break;
+                case Settings.Theme.Light:
+                    MainBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    SecondBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    break;
+                case Settings.Theme.Blue:
+                    MainBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(0, 70, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    SecondBrush = new LinearGradientBrush(Color.FromRgb(0, 70, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    break;
 
+                default:
+                    goto DoDark;
+            }
+            GridSystem.Background = MainBrush;
+            ListOfExe.Background = SecondBrush;
+            NameText.Background = SecondBrush;
+        }
         private void RunApplication(object sender, RoutedEventArgs e)
         {
             string FileName = "";//Name of the exe
@@ -94,7 +121,31 @@ namespace WpfTool
                 Process.Start(info);//Start the app
             }
         }
+        private void RemoveApplication(object sender, RoutedEventArgs e)
+        {
+            string FileName = "";//Name of the exe
+            string Location = "";
+            if (ListOfExe.SelectedItem != null)//Makes sure something is selected
+            {
+                FileName = ListOfExe.SelectedItem.ToString();//Gets the Exe name of what app you want to run
+                Location = Controller.CurrentUser.ExeFileLocations[ListOfExe.SelectedIndex];//Gets the location of the file above
 
+                foreach (string s in Controller.CurrentUser.ExeNames)//Get all of the strings in exenames
+                    if (s.CompareTo(FileName) == 0)//If the FileName is the same as the exename
+                    {
+                        Controller.CurrentUser.ExeNames.Remove(FileName);//remove it
+                        break;//Break the loop
+                    }
+                foreach (string s in Controller.CurrentUser.ExeFileLocations)//Now get the file locations from the exefilelocations
+                    if (s.CompareTo(Location) == 0)//if the string locations is in the exefilelocations
+                    {
+                        Controller.CurrentUser.ExeFileLocations.Remove(Location);//remove it
+                        break;//break the loop
+                    }
+            }
+            DisplayListOfExe();//redesplays the list
+                               //if the application is not in the list this should also refresh the list
+        }
         private void SubmitApplication(object sender, RoutedEventArgs e)
         {
             if (!System.IO.File.Exists(NewPath.Text + "\\" + NewExe.Text))//If this file that is being added does not exist
@@ -117,14 +168,13 @@ namespace WpfTool
             Controller.CurrentUser.ExeFileLocations.Add(NewPath.Text);//Adds a new file directory
             Controller.CurrentUser.ExeNames.Add(NewExe.Text);//adds a new file name
 
-            AddToListOfExe();//Updates the listbox 
+            DisplayListOfExe();//Updates the listbox 
 
 
         Finish:
             return;
         }
-
-        public void AddToListOfExe()
+        public void DisplayListOfExe()
         {
             ListOfExe.Items.Clear();//Clears all the items
             ListOfExe.ItemsSource = null;//Also clears all the items
@@ -132,8 +182,6 @@ namespace WpfTool
             for (int i = 0; i < Controller.CurrentUser.ExeNames.Count; i++)//Cycle through each exe name 
                 ListOfExe.Items.Add(Controller.CurrentUser.ExeNames[i]);//And populate the list with them
         }
-
-
         public bool SaveUser()
         {
             string SaveFileLocation = @"SaveFile.txt";//Location where the save file is stored
@@ -155,7 +203,7 @@ namespace WpfTool
                 MasterLines.Add(Lines[i]);//Add each line to the MasterList
                 if (Lines[i].ToLower().CompareTo("#" + Controller.CurrentUser.Name.ToLower()) == 0)//If it hits the name of the current account
                 {
-                    MasterLines.Add(Lines[++i]);//add the password line
+                    MasterLines.Add("*" + Controller.CurrentUser.PEaNsCsRwYoPrTdED);//add the password line
                     MasterLines.Add("@" + Controller.CurrentUser.FirstName + "," + Controller.CurrentUser.LastName);//add the users name
                     i++;
                     MasterLines.Add(Lines[++i]);//add the join date
@@ -176,14 +224,10 @@ namespace WpfTool
             File.WriteAllLines(SaveFileLocation, MasterLines);
             return true;
         }
-
-
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveUser();
         }
-
         private void FileSelection(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -212,7 +256,6 @@ namespace WpfTool
                 }
             }
         }
-
         private void ClearText(object sender, RoutedEventArgs e)
         {
             (sender as TextBox).Text = "";
@@ -221,7 +264,7 @@ namespace WpfTool
     public class User
     {
         public string Name;//Username
-        string PEaNsCsRwYoPrTdED;
+        public string PEaNsCsRwYoPrTdED;
         public string ProfileImage;//Selects from the different profile pictures
 
         public string FirstName;//Users first name

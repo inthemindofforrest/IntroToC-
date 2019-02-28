@@ -21,10 +21,6 @@ namespace WpfTool
     /// </summary>
     public partial class ErrorWindow : Window
     {
-        public void temp()
-        {
-
-        }
 
         public ErrorWindow()
         {

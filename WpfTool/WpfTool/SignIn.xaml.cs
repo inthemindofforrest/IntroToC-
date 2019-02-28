@@ -24,6 +24,7 @@ namespace WpfTool
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             Unhidden.Visibility = Visibility.Hidden;
+            SetWindowTheme();
         }
         void AttemptLogin(object sender, RoutedEventArgs e)
         {
@@ -102,6 +103,11 @@ namespace WpfTool
             Password.Password = Unhidden.Text;
             Unhidden.Visibility = Visibility.Hidden;
             Password.Visibility = Visibility.Visible;
+        }
+
+        void SetWindowTheme()
+        {
+
         }
     }
 }
