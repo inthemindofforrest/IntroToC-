@@ -73,6 +73,20 @@ namespace WpfTool
             Page.Add(NextButton);
             Page.Add(BackButton);
 
+            Page.Add(BlackButton);
+            Page.Add(BlueButton);
+            Page.Add(GreenButton);
+            Page.Add(RedButton);
+            Page.Add(WhiteButton);
+
+            Page.Add(BlackImage);
+            Page.Add(BlueImage);
+            Page.Add(GreenImage);
+            Page.Add(RedImage);
+            Page.Add(WhiteImage);
+
+            Page.Add(ProfilePicText);
+
             Pages.Add(Page);
 
             return true;
@@ -212,6 +226,26 @@ namespace WpfTool
                 Window Errrrrrrr = new ErrorWindow();
                 Errrrrrrr.ShowDialog();
             }
+        }
+        void BlackPicture(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "Black";
+        }
+        void BluePicture(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "Blue";
+        }
+        void GreenPicture(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "Green";
+        }
+        void RedPicture(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "Red";
+        }
+        void WhitePicture(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "White";
         }
 
         private bool EmailCheck(string email)

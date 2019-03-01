@@ -101,6 +101,21 @@ namespace WpfTool
             Page.Add(WhiteTheme);
             Page.Add(BlueTheme);
 
+            Page.Add(SubmitButton);
+            Page.Add(PasswordChangedText);
+
+            Page.Add(BlackButton);
+            Page.Add(BlueButton);
+            Page.Add(GreenButton);
+            Page.Add(RedButton);
+            Page.Add(WhiteButton);
+
+            Page.Add(BlackImage);
+            Page.Add(BlueImage);
+            Page.Add(GreenImage);
+            Page.Add(RedImage);
+            Page.Add(WhiteImage);
+
             Page.Add(ProfilePicText);
 
             #endregion
@@ -155,6 +170,7 @@ namespace WpfTool
             ResizeMode = ResizeMode.NoResize;//Makes the window not resizable
             DisplayListOfExe();//Update the Listbox with the correct data
             PageVisibility(PageNames.MainPage);//Makes sure to close all pages and open the main page
+            UpdateProfilePicture();
         }
 
         #region Buttons
@@ -169,12 +185,12 @@ namespace WpfTool
 
                 if (Controller.CurrentUser.Age != -1)//If not a guest
                 {
-                    UpdateTheme();
                     SignInOut.Content = "Sign Out";//Make the button be a Signout
                     NameField.Text = Controller.CurrentUser.Name;//Sets the display name to the users name
                     UserImage.Source = new BitmapImage(new Uri(Controller.CurrentUser.ProfileImage + ".png", UriKind.Relative));//Image stuff.... not sure if it works yet
                 }
-
+                UpdateTheme();
+                UpdateProfilePicture();
                 ListOfExe.Items.Clear();//Clears all the items
                 ListOfExe.ItemsSource = null;//Also clears all the items
                 for (int i = 0; i < Controller.CurrentUser.ExeNames.Count; i++)//Cycle through each exe name 
@@ -190,6 +206,10 @@ namespace WpfTool
 
                 //Sign the account out
                 Controller.CurrentUser = new User();//Resets the user
+
+                UpdateTheme();
+                UpdateProfilePicture();
+
                 ListOfExe.Items.Clear();//Clears out the items
                 ListOfExe.ItemsSource = null;//Again
                 for (int i = 0; i < Controller.CurrentUser.ExeNames.Count; i++)//Cycle through the guest accounts apps
@@ -340,6 +360,32 @@ namespace WpfTool
             UpdateTheme();
         }
 
+        private void UpdateImageBlack(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "Black";
+            UpdateProfilePicture();
+        }
+        private void UpdateImageBlue(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "Blue";
+            UpdateProfilePicture();
+        }
+        private void UpdateImageGreen(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "Green";
+            UpdateProfilePicture();
+        }
+        private void UpdateImageRed(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "Red";
+            UpdateProfilePicture();
+        }
+        private void UpdateImageWhite(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.ProfileImage = "White";
+            UpdateProfilePicture();
+        }
+
         private void SubmitNewPassword(object sender, RoutedEventArgs e)
         {
             if (Controller.CurrentUser.Age != -1)
@@ -351,11 +397,13 @@ namespace WpfTool
                     Decrypted += Encrypted[i];
 
                 //Check if the Current password is correct
-                if (CurrentPasswordField.Text.CompareTo(Decrypted) == 0)
+                if (CurrentPasswordField.Text.CompareTo(Decrypted) == 0 || (Controller.CurrentUser.RecoverPass != "" && CurrentPasswordField.Text.CompareTo(Controller.CurrentUser.RecoverPass) == 0))
                     //Check if the new password is long enough, and matches eachother
                     if (NewPasswordField.Text.Length > 8 && NewPasswordField.Text.CompareTo(NewPasswordAgainField.Text) == 0)
                     {
                         //Set the password to the new password but encrypted
+                        Controller.CurrentUser.RecoverPass = "";
+
                         Controller.CurrentUser.PEaNsCsRwYoPrTdED = Controller.CurrentUser.EncryptPW(NewPasswordAgainField.Text);
 
                         CurrentPasswordField.Text = "";
@@ -406,6 +454,8 @@ namespace WpfTool
                     i++;
                     MasterLines.Add("^" + (int)Controller.CurrentUser.PlayerSettings.CurrentTheme);//add current theme
                     i++;
+                    MasterLines.Add("%" + Controller.CurrentUser.Email);
+                    i++;
                     for (int j = 0; j < Controller.CurrentUser.ExeFileLocations.Count; j++)//itterates through each
                     {
                         MasterLines.Add(Controller.CurrentUser.ExeFileLocations[j] + "," + Controller.CurrentUser.ExeNames[j]);
@@ -452,7 +502,7 @@ namespace WpfTool
                 default:
                 case Settings.Theme.Dark:
                     MainBrush = new LinearGradientBrush(Color.FromRgb(0, 0, 0), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
-                    SecondBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(129, 129, 129), new Point(0.5, 0), new Point(0.5, 1));
+                    SecondBrush = new LinearGradientBrush(Color.FromRgb(150, 150, 150), Color.FromRgb(85, 85, 85), new Point(0.5, 0), new Point(0.5, 1));
                     break;
                 case Settings.Theme.Light:
                     MainBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
@@ -469,7 +519,7 @@ namespace WpfTool
         }
         void UpdateProfilePicture()
         {
-            ImageSource source = new BitmapImage(new Uri("Images/Black.png"));
+            ImageSource source = new BitmapImage(new Uri(@"Images/" + Controller.CurrentUser.ProfileImage + ".png", UriKind.Relative));
             UserImage.Source = source;
         }
         public void DisplayListOfExe()
@@ -488,7 +538,6 @@ namespace WpfTool
             NewPasswordField.Text = EncryptedPWNewFirst.Password;
             CurrentPasswordField.Text = EncryptedPWCurrent.Password;
         }
-
     }
     public class User
     {
@@ -497,6 +546,7 @@ namespace WpfTool
         public string ProfileImage;//Selects from the different profile pictures
 
         public string Email;
+        public string RecoverPass;
 
         public string FirstName;//Users first name
         public string LastName;//Users Last Name
@@ -519,7 +569,7 @@ namespace WpfTool
         {
             //Starts the user on a guest account
             Name = "Guest";
-            ProfileImage = "Blue";//Default profile image
+            ProfileImage = "Green";//Default profile image
             Age = -1;//Sets the age to -1 to bypass the age restriction
             CreationDate = System.DateTime.Now;//Sets the CreationDate to now
             LoadData(true);//Loads the data using Guest
@@ -665,7 +715,7 @@ namespace WpfTool
                         continue;
                     }
 
-            System.IO.File.Encrypt(SaveFileLocation);//Keeps the file ENCRYPTED and safe
+            //System.IO.File.Encrypt(SaveFileLocation);//Keeps the file ENCRYPTED and safe
             //Lines[this.IndexNumber + 1] = EncryptPW(Lines[this.IndexNumber + 1]);
             //Lines[this.IndexNumber + 1] = DecryptPW(Lines[this.IndexNumber + 1]);
 

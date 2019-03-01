@@ -26,7 +26,7 @@ namespace WpfTool
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             Unhidden.Visibility = Visibility.Hidden;
-            SetWindowTheme();
+            //SetWindowTheme();
         }
         void AttemptLogin(object sender, RoutedEventArgs e)
         {
@@ -34,8 +34,6 @@ namespace WpfTool
 
 
             string[] Lines = System.IO.File.ReadAllLines(SaveFileLocation);//Retrieve the lines from the text file
-
-            Password.Password = Unhidden.Text;
 
 
             //Using the username cycle through the save of the users accounts
@@ -56,9 +54,11 @@ namespace WpfTool
 
                     
                     //If the password matches the encrypted user password, Load data
-                    if (Password.Password.CompareTo(CorrectPass) == 0)//If the password entered is the password of the user
+                    if (Password.Password.CompareTo(CorrectPass) == 0 || (Controller.CurrentUser.RecoverPass != "" && Password.Password.CompareTo(Controller.CurrentUser.RecoverPass) == 0))//If the password entered is the password of the user
                     {
+                        string temp = Controller.CurrentUser.RecoverPass;
                         Controller.CurrentUser = new User(1);
+                        Controller.CurrentUser.RecoverPass = temp;
                         for (int j = i; j < Lines.Length; j++)
                             if (Lines[j].Length != 0 && Lines[j][0] == '$')
                                 DateTime.TryParse(Lines[j].Split('$')[1], out Controller.CurrentUser.CreationDate);
@@ -109,45 +109,54 @@ namespace WpfTool
         private void ForgotPassword(object sender, RoutedEventArgs e)
         {
             #region Password
-            string EmailPassword = /*"D8K@eM39v$By5C"*/ "Reddog05";
+            string EmailPassword = "facebook13";
             #endregion
-            while (true)
+            #region EmailNonsense
+            string Greeting = ((DateTime.Now.Hour < 12) ? "Good Morning " : (DateTime.Now.Hour < 16 ? "Good Afternoon " : "Good Evening "));
+            string Name = GetInfo().Split(',')[0];
+            string Email = GetInfo().Split(',')[1];
+            Controller.CurrentUser.RecoverPass = "";
+
+            List<char> UseableChars = new List<char>();
+            for (int i = 65; i < 91; i++)
+                UseableChars.Add((char)i);
+            for (int i = 48; i < 58; i++)
+                UseableChars.Add((char)i);
+            for (int i = 97; i < 122; i++)
+                UseableChars.Add((char)i);
+
+            Random rand = new Random(DateTime.Now.Millisecond);
+            int NewPass = rand.Next(8, 16);
+            for (int i = 0; i < NewPass; i++)
+                Controller.CurrentUser.RecoverPass += UseableChars[rand.Next(0,UseableChars.Count)];
+            #endregion
+
+            #region MailSection
+            MailMessage Msg = new MailMessage("inthemindofforrest@outlook.com", Email);//Sender, Reciever
+            SmtpClient client = new SmtpClient("smtp-mail.outlook.com", 587);//Outlooks host, port
+
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;//Sent over the network
+            client.UseDefaultCredentials = false;//
+            client.Credentials = new NetworkCredential("inthemindofforrest@outlook.com", EmailPassword);//Senders email and pw
+            client.EnableSsl = true;//Ssl needs to be enabled for Outlook
+
+            Msg.IsBodyHtml = true;//takes html input for body
+            Msg.Subject = ("Account Recovery from Mindful");//Subject of email
+            //Body of the email
+            Msg.Body = (Greeting + Name + ",\n\n");
+            Msg.Body += ("<p>We have been notified that you have forgotten your password. In this case we have generated a code for you to use to change your password with.</p><br>");
+            Msg.Body += ("<b>" + Controller.CurrentUser.RecoverPass + "</b><br><br>");
+            Msg.Body += ("<p>Thanks for contacting Mindful,<br> Mindful Squad</p>");
+
+
+            try { client.Send(Msg); }//trys and sends it 
+            catch//if it fails, notify user
             {
-                #region EmailNonsense
-                string Greeting = ((DateTime.Now.Hour < 12) ? "Good Morning " : (DateTime.Now.Hour < 16 ? "Good Afternoon " : "Good Evening "));
-                string Name = GetInfo().Split(',')[0];
-                string Email = GetInfo().Split(',')[1];
-                string newPassword = "";
-
-                Random rand = new Random();
-                int NewPass = rand.Next(8, 16);
-                for (int i = 0; i < NewPass; i++)
-                    newPassword += (char)rand.Next(65, 90);
-                #endregion
-
-                MailMessage Msg = new MailMessage("mccarthy_forrest@outlook.com", Email);
-                SmtpClient client = new SmtpClient("smtp-mail.outlook.com", 587);
-
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("mccarthy_forrest@outlook.com", EmailPassword);
-                client.EnableSsl = true;
-
-                Msg.Subject = ("Account Recovery from Mindful");
-                Msg.Body = (Greeting + Name + ",\n\n");
-                Msg.Body += ("\tWe have been notified that you have forgotten your password. In this case we have generated a new password for you to use.\n\n");
-                Msg.Body += ("\t\t<b>" + newPassword + "</b>\n\n");
-                Msg.Body += ("Thanks for contacting Mindful,\n Mindful Squad");
-
-
-                try { client.Send(Msg); }
-                catch
-                {
-                    Controller.CurrentUser.errorMessage = "Email could not be sent";
-                    Window Errrrrr = new ErrorWindow();
-                    Errrrrr.ShowDialog();
-                }
+                Controller.CurrentUser.errorMessage = "Email could not be sent";
+                Window Errrrrr = new ErrorWindow();
+                Errrrrr.ShowDialog();
             }
+            #endregion
         }
 
         string GetInfo()
@@ -179,9 +188,10 @@ namespace WpfTool
 
             return Info;
         }
-        void SetWindowTheme()
-        {
 
+        private void Unhidden_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Password.Password = Unhidden.Text;
         }
     }
 }
