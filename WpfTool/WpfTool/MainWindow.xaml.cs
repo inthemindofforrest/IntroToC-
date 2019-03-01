@@ -25,12 +25,140 @@ namespace WpfTool
 
     public partial class MainWindow : Window
     {
+        #region PageCode
+        List<List<UIElement>> Pages = new List<List<UIElement>>();
+        enum PageNames { MainPage, SettingsPage };
+
+        bool GetMainPage()
+        {
+            List<UIElement> Page = new List<UIElement>();
+
+            #region PageContents
+
+            Page.Add(NameField);
+            Page.Add(NameText);
+
+            Page.Add(ImageBorder);
+            Page.Add(UserImage);
+
+            Page.Add(FileNameText);
+            Page.Add(PathText);
+
+            Page.Add(NewExe);
+            Page.Add(NewPath);
+
+            Page.Add(AddProgramBorder);
+            Page.Add(AddProgramButton);
+            Page.Add(AddprogramText);
+
+            Page.Add(ConfirmNewButton);
+
+            Page.Add(ListOfExe);
+            Page.Add(ListOfExeBorder);
+
+            Page.Add(PlayButton);
+            Page.Add(RemoveButton);
+            Page.Add(SignInOut);
+            Page.Add(SettingsButton);
+
+            #endregion
+
+            Pages.Add(Page);
+            return (Page.Count > 0);
+        }
+        bool GetSettingsPage()
+        {
+            List<UIElement> Page = new List<UIElement>();//Creates a list of UIElements
+
+            #region PageContents
+
+            Page.Add(NameField);
+            Page.Add(NameText);
+            Page.Add(ImageBorder);
+            Page.Add(UserImage);
+
+            Page.Add(BackButton);
+
+            Page.Add(ChangePasswordText);
+
+            Page.Add(CurrentPasswordField);
+            Page.Add(CurrentPasswordText);
+
+            Page.Add(NewPasswordAgainField);
+            Page.Add(NewPasswordAgainText);
+
+            Page.Add(NewPasswordField);
+            Page.Add(NewPasswordText);
+
+            Page.Add(EncryptedPWCurrent);
+            Page.Add(EncryptedPWNewFirst);
+            Page.Add(EncryptedPWNewSecond);
+
+            Page.Add(ShowPasswords);
+
+            Page.Add(ThemeText);
+            Page.Add(BlackTheme);
+            Page.Add(WhiteTheme);
+            Page.Add(BlueTheme);
+
+            Page.Add(ProfilePicText);
+
+            #endregion
+
+            Pages.Add(Page);//Adds the page to the list of Pages
+            return (Page.Count > 0);//Returns status of the page
+        }
+
+        bool GetAllPages()
+        {
+            Pages.Clear();
+            return (GetMainPage() && GetSettingsPage());//Gets all the pages into the pages
+        }
+
+        void PageVisibility(Visibility VisibilityLevel, PageNames PageNumber)
+        {
+            if (Pages[(int)PageNumber] != null)//If the page number exists
+                foreach (UIElement element in Pages[(int)PageNumber])//For every Uielement in the page
+                    element.Visibility = VisibilityLevel;//Set the visibility to the wanted visibility
+        }
+        void PageVisibility(PageNames ExceptThis)
+        {
+            List<UIElement> page = new List<UIElement>();//Make a temp page
+            if (GetAllPages())//As long as wanted hide all pages, and pages are loaded
+            {
+                for (int i = 0; i < Pages.Count; i++)//Go through all the pages and hide them all
+                    PageVisibility(Visibility.Hidden, (PageNames)i);
+                if (Pages[(int)ExceptThis] != null)//Page exists
+                    PageVisibility(Visibility.Visible, ExceptThis);//Make this page visible
+            }
+        }
+
+        private void SettingsPageSetter(object sender, RoutedEventArgs e)
+        {
+            PageVisibility(PageNames.SettingsPage);//Makes the settings page visible
+
+            NewPasswordAgainField.Visibility = Visibility.Hidden;
+            NewPasswordField.Visibility = Visibility.Hidden;
+            CurrentPasswordField.Visibility = Visibility.Hidden;
+
+            PasswordChangedText.Visibility = Visibility.Hidden;
+        }
+        private void MainPageSetter(object sender, RoutedEventArgs e)
+        {
+            PageVisibility(PageNames.MainPage);//Makes the Main page visible
+        }
+        #endregion
+
         public MainWindow()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;//Makes the window not resizable
             DisplayListOfExe();//Update the Listbox with the correct data
+            PageVisibility(PageNames.MainPage);//Makes sure to close all pages and open the main page
         }
+
+        #region Buttons
+        #region MainWindowButtons
         private void SignInOut_Click(object sender, RoutedEventArgs e)
         {
             if (Controller.CurrentUser.Age == -1)//Sign in
@@ -49,7 +177,7 @@ namespace WpfTool
 
                 ListOfExe.Items.Clear();//Clears all the items
                 ListOfExe.ItemsSource = null;//Also clears all the items
-                for(int i = 0; i < Controller.CurrentUser.ExeNames.Count; i++)//Cycle through each exe name 
+                for (int i = 0; i < Controller.CurrentUser.ExeNames.Count; i++)//Cycle through each exe name 
                     ListOfExe.Items.Add(Controller.CurrentUser.ExeNames[i]);//And populate the list with them
             }
             else//Sign Out
@@ -68,33 +196,6 @@ namespace WpfTool
                     ListOfExe.Items.Add(Controller.CurrentUser.ExeNames[i]);//Populate the list with the guest apps
             }
         }
-        void UpdateTheme()
-        {
-            LinearGradientBrush MainBrush = new LinearGradientBrush();
-            LinearGradientBrush SecondBrush = new LinearGradientBrush();
-            switch (Controller.CurrentUser.PlayerSettings.CurrentTheme)
-            {
-                case Settings.Theme.Dark:
-                    DoDark:
-                    MainBrush = new LinearGradientBrush(Color.FromRgb(0,0,0), Color.FromRgb(255,255,255), new Point(0.5, 0), new Point(0.5, 1));
-                    SecondBrush = new LinearGradientBrush(Color.FromRgb(205, 205, 205), Color.FromRgb(50, 50, 50), new Point(0.5, 0), new Point(0.5, 1));
-                    break;
-                case Settings.Theme.Light:
-                    MainBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
-                    SecondBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
-                    break;
-                case Settings.Theme.Blue:
-                    MainBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(0, 70, 255), new Point(0.5, 0), new Point(0.5, 1));
-                    SecondBrush = new LinearGradientBrush(Color.FromRgb(0, 70, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
-                    break;
-
-                default:
-                    goto DoDark;
-            }
-            GridSystem.Background = MainBrush;
-            ListOfExe.Background = SecondBrush;
-            NameText.Background = SecondBrush;
-        }
         private void RunApplication(object sender, RoutedEventArgs e)
         {
             string FileName = "";//Name of the exe
@@ -104,15 +205,15 @@ namespace WpfTool
                 FileName = ListOfExe.SelectedItem.ToString();//Gets the Exe name of what app you want to run
                 Location = Controller.CurrentUser.ExeFileLocations[ListOfExe.SelectedIndex];//Gets the location of the file above
             }
-                if (!System.IO.File.Exists(Location + "\\" + FileName))//Checks if the file even exists (More just stupid proof of this system)
-                {
-                    Controller.CurrentUser.errorMessage = FileName + " could not be opened. File location was not found.";//Change an error message
-                    Window errorWindow = new ErrorWindow();//Create the error window
-                    errorWindow.ShowDialog();//Show the window
-                    return;//Close the function early
-                }
+            if (!System.IO.File.Exists(Location + "\\" + FileName))//Checks if the file even exists (More just stupid proof of this system)
+            {
+                Controller.CurrentUser.errorMessage = FileName + " could not be opened. File location was not found.";//Change an error message
+                Window errorWindow = new ErrorWindow();//Create the error window
+                errorWindow.ShowDialog();//Show the window
+                return;//Close the function early
+            }
 
-            
+
             if (FileName != "")//As long as the file name is not blank
             {
                 ProcessStartInfo info = new ProcessStartInfo();//Create a proccess
@@ -124,24 +225,32 @@ namespace WpfTool
         private void RemoveApplication(object sender, RoutedEventArgs e)
         {
             string FileName = "";//Name of the exe
-            string Location = "";
+            string Location = "";//Name of the location
+
             if (ListOfExe.SelectedItem != null)//Makes sure something is selected
             {
-                FileName = ListOfExe.SelectedItem.ToString();//Gets the Exe name of what app you want to run
-                Location = Controller.CurrentUser.ExeFileLocations[ListOfExe.SelectedIndex];//Gets the location of the file above
+                Window Confirmation = new ConfirmWindow();//Create a confirmation window
+                Confirmation.ShowDialog();//Display the window and wait for the return
 
-                foreach (string s in Controller.CurrentUser.ExeNames)//Get all of the strings in exenames
-                    if (s.CompareTo(FileName) == 0)//If the FileName is the same as the exename
-                    {
-                        Controller.CurrentUser.ExeNames.Remove(FileName);//remove it
-                        break;//Break the loop
-                    }
-                foreach (string s in Controller.CurrentUser.ExeFileLocations)//Now get the file locations from the exefilelocations
-                    if (s.CompareTo(Location) == 0)//if the string locations is in the exefilelocations
-                    {
-                        Controller.CurrentUser.ExeFileLocations.Remove(Location);//remove it
-                        break;//break the loop
-                    }
+
+                if (Confirmation.DialogResult == true)//If the user has confirmed the decision
+                {
+                    FileName = ListOfExe.SelectedItem.ToString();//Gets the Exe name of what app you want to run
+                    Location = Controller.CurrentUser.ExeFileLocations[ListOfExe.SelectedIndex];//Gets the location of the file above
+
+                    foreach (string s in Controller.CurrentUser.ExeNames)//Get all of the strings in exenames
+                        if (s.CompareTo(FileName) == 0)//If the FileName is the same as the exename
+                        {
+                            Controller.CurrentUser.ExeNames.Remove(FileName);//remove it
+                            break;//Break the loop
+                        }
+                    foreach (string s in Controller.CurrentUser.ExeFileLocations)//Now get the file locations from the exefilelocations
+                        if (s.CompareTo(Location) == 0)//if the string locations is in the exefilelocations
+                        {
+                            Controller.CurrentUser.ExeFileLocations.Remove(Location);//remove it
+                            break;//break the loop
+                        }
+                }
             }
             DisplayListOfExe();//redesplays the list
                                //if the application is not in the list this should also refresh the list
@@ -171,58 +280,8 @@ namespace WpfTool
             DisplayListOfExe();//Updates the listbox 
 
 
-        Finish:
+            Finish:
             return;
-        }
-        public void DisplayListOfExe()
-        {
-            ListOfExe.Items.Clear();//Clears all the items
-            ListOfExe.ItemsSource = null;//Also clears all the items
-                                         //if (Controller.CurrentUser != null)
-            for (int i = 0; i < Controller.CurrentUser.ExeNames.Count; i++)//Cycle through each exe name 
-                ListOfExe.Items.Add(Controller.CurrentUser.ExeNames[i]);//And populate the list with them
-        }
-        public bool SaveUser()
-        {
-            string SaveFileLocation = @"SaveFile.txt";//Location where the save file is stored
-
-            if (!System.IO.File.Exists(SaveFileLocation))
-                return false;//return false if the data for the user could not be read
-                             //Instruct the user to either continue with corrupted data and overide it when it is saved
-                             //Or try to find the user data again
-            else
-                System.IO.File.Decrypt(SaveFileLocation);//DECRYPTS it so it can quickly read it
-
-
-            string[] Lines = System.IO.File.ReadAllLines(SaveFileLocation);//Retrieve the lines from the text file
-            List<string> MasterLines = new List<string>();
-
-
-            for(int i = 0; i < Lines.Length; i++)//goes through each line is the original save file
-            {
-                MasterLines.Add(Lines[i]);//Add each line to the MasterList
-                if (Lines[i].ToLower().CompareTo("#" + Controller.CurrentUser.Name.ToLower()) == 0)//If it hits the name of the current account
-                {
-                    MasterLines.Add("*" + Controller.CurrentUser.PEaNsCsRwYoPrTdED);//add the password line
-                    MasterLines.Add("@" + Controller.CurrentUser.FirstName + "," + Controller.CurrentUser.LastName);//add the users name
-                    i++;
-                    MasterLines.Add(Lines[++i]);//add the join date
-                    MasterLines.Add("&" + Controller.CurrentUser.ProfileImage);//add Profiles image
-                    i++;
-                    MasterLines.Add("^" + (int)Controller.CurrentUser.PlayerSettings.CurrentTheme);//add current theme
-                    i++;
-                    for (int j = 0; j < Controller.CurrentUser.ExeFileLocations.Count; j++)//itterates through each
-                    {
-                        MasterLines.Add(Controller.CurrentUser.ExeFileLocations[j] + "," + Controller.CurrentUser.ExeNames[j]);
-                        i++;
-                    }
-                    MasterLines.Add("[end]");
-                    i++;
-                }
-            }
-
-            File.WriteAllLines(SaveFileLocation, MasterLines);
-            return true;
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -234,7 +293,7 @@ namespace WpfTool
 
             // Set filter for file extension and default file extension 
             dlg.DefaultExt = ".exe";
-            dlg.Filter = "Anal Files (*.exe)|*.exe";
+            dlg.Filter = "Executable Files (*.exe)|*.exe";
 
             bool? result = dlg.ShowDialog();
 
@@ -260,12 +319,184 @@ namespace WpfTool
         {
             (sender as TextBox).Text = "";
         }
+        #endregion
+        #region SettingsWindowButtons
+        private void ChangeToDarkTheme(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.PlayerSettings.CurrentTheme = Settings.Theme.Dark;
+            //Update the theme of the page.
+            UpdateTheme();
+        }
+        private void ChangeToLightTheme(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.PlayerSettings.CurrentTheme = Settings.Theme.Light;
+            //Update the theme of the page.
+            UpdateTheme();
+        }
+        private void ChangeToBlueTheme(object sender, RoutedEventArgs e)
+        {
+            Controller.CurrentUser.PlayerSettings.CurrentTheme = Settings.Theme.Blue;
+            //Update the theme of the page.
+            UpdateTheme();
+        }
+
+        private void SubmitNewPassword(object sender, RoutedEventArgs e)
+        {
+            if (Controller.CurrentUser.Age != -1)
+            {
+                string Encrypted = Controller.CurrentUser.DecryptPW(Controller.CurrentUser.PEaNsCsRwYoPrTdED);
+                string Decrypted = "";
+
+                for (int i = 1; i < Encrypted.Length; i++)
+                    Decrypted += Encrypted[i];
+
+                //Check if the Current password is correct
+                if (CurrentPasswordField.Text.CompareTo(Decrypted) == 0)
+                    //Check if the new password is long enough, and matches eachother
+                    if (NewPasswordField.Text.Length > 8 && NewPasswordField.Text.CompareTo(NewPasswordAgainField.Text) == 0)
+                    {
+                        //Set the password to the new password but encrypted
+                        Controller.CurrentUser.PEaNsCsRwYoPrTdED = Controller.CurrentUser.EncryptPW(NewPasswordAgainField.Text);
+
+                        CurrentPasswordField.Text = "";
+                        EncryptedPWCurrent.Password = "";
+
+                        NewPasswordAgainField.Text = "";
+                        EncryptedPWNewSecond.Password = "";
+
+                        NewPasswordField.Text = "";
+                        EncryptedPWNewFirst.Password = "";
+
+                        PasswordChangedText.Visibility = Visibility.Visible;
+                    }
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        public bool SaveUser()
+        {
+            string SaveFileLocation = @"SaveFile.txt";//Location where the save file is stored
+
+            if (!System.IO.File.Exists(SaveFileLocation))
+                return false;//return false if the data for the user could not be read
+                             //Instruct the user to either continue with corrupted data and overide it when it is saved
+                             //Or try to find the user data again
+            else
+                System.IO.File.Decrypt(SaveFileLocation);//DECRYPTS it so it can quickly read it
+
+
+            string[] Lines = System.IO.File.ReadAllLines(SaveFileLocation);//Retrieve the lines from the text file
+            List<string> MasterLines = new List<string>();
+
+
+            for (int i = 0; i < Lines.Length; i++)//goes through each line is the original save file
+            {
+                MasterLines.Add(Lines[i]);//Add each line to the MasterList
+                if (Lines[i].ToLower().CompareTo("#" + Controller.CurrentUser.Name.ToLower()) == 0)//If it hits the name of the current account
+                {
+                    MasterLines.Add(Controller.CurrentUser.PEaNsCsRwYoPrTdED);//add the password line
+                    i++;
+                    MasterLines.Add("@" + Controller.CurrentUser.FirstName + "," + Controller.CurrentUser.LastName);//add the users name
+                    i++;
+                    MasterLines.Add(Lines[++i]);//add the join date
+                    MasterLines.Add("&" + Controller.CurrentUser.ProfileImage);//add Profiles image
+                    i++;
+                    MasterLines.Add("^" + (int)Controller.CurrentUser.PlayerSettings.CurrentTheme);//add current theme
+                    i++;
+                    for (int j = 0; j < Controller.CurrentUser.ExeFileLocations.Count; j++)//itterates through each
+                    {
+                        MasterLines.Add(Controller.CurrentUser.ExeFileLocations[j] + "," + Controller.CurrentUser.ExeNames[j]);
+                        i++;
+                    }
+                    MasterLines.Add("[end]");
+                    i++;
+                }
+            }
+
+            File.WriteAllLines(SaveFileLocation, MasterLines);
+            return true;
+        }
+
+        #region SettingsFunctions
+        private void ShowPassword(object sender, RoutedEventArgs e)
+        {
+            NewPasswordAgainField.Visibility = Visibility.Visible;
+            NewPasswordField.Visibility = Visibility.Visible;
+            CurrentPasswordField.Visibility = Visibility.Visible;
+
+            EncryptedPWCurrent.Visibility = Visibility.Hidden;
+            EncryptedPWNewFirst.Visibility = Visibility.Hidden;
+            EncryptedPWNewSecond.Visibility = Visibility.Hidden;
+        }
+        private void HidePassword(object sender, RoutedEventArgs e)
+        {
+            NewPasswordAgainField.Visibility = Visibility.Hidden;
+            NewPasswordField.Visibility = Visibility.Hidden;
+            CurrentPasswordField.Visibility = Visibility.Hidden;
+
+            EncryptedPWCurrent.Visibility = Visibility.Visible;
+            EncryptedPWNewFirst.Visibility = Visibility.Visible;
+            EncryptedPWNewSecond.Visibility = Visibility.Visible;
+        }
+        #endregion
+        #region UpdateLayout
+        void UpdateTheme()
+        {
+            LinearGradientBrush MainBrush = new LinearGradientBrush();
+            LinearGradientBrush SecondBrush = new LinearGradientBrush();
+            switch (Controller.CurrentUser.PlayerSettings.CurrentTheme)
+            {
+                default:
+                case Settings.Theme.Dark:
+                    MainBrush = new LinearGradientBrush(Color.FromRgb(0, 0, 0), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    SecondBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(129, 129, 129), new Point(0.5, 0), new Point(0.5, 1));
+                    break;
+                case Settings.Theme.Light:
+                    MainBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    SecondBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    break;
+                case Settings.Theme.Blue:
+                    MainBrush = new LinearGradientBrush(Color.FromRgb(255, 255, 255), Color.FromRgb(0, 70, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    SecondBrush = new LinearGradientBrush(Color.FromRgb(0, 70, 255), Color.FromRgb(255, 255, 255), new Point(0.5, 0), new Point(0.5, 1));
+                    break;
+            }
+            GridSystem.Background = MainBrush;
+            ListOfExe.Background = SecondBrush;
+            NameField.Background = SecondBrush;
+        }
+        void UpdateProfilePicture()
+        {
+            ImageSource source = new BitmapImage(new Uri("Images/Black.png"));
+            UserImage.Source = source;
+        }
+        public void DisplayListOfExe()
+        {
+            ListOfExe.Items.Clear();//Clears all the items
+            ListOfExe.ItemsSource = null;//Also clears all the items
+                                         //if (Controller.CurrentUser != null)
+            for (int i = 0; i < Controller.CurrentUser.ExeNames.Count; i++)//Cycle through each exe name 
+                ListOfExe.Items.Add(Controller.CurrentUser.ExeNames[i]);//And populate the list with them
+        }
+        #endregion
+
+        private void MovePasswords(object sender, RoutedEventArgs e)
+        {
+            NewPasswordAgainField.Text = EncryptedPWNewSecond.Password;
+            NewPasswordField.Text = EncryptedPWNewFirst.Password;
+            CurrentPasswordField.Text = EncryptedPWCurrent.Password;
+        }
+
     }
     public class User
     {
         public string Name;//Username
         public string PEaNsCsRwYoPrTdED;
         public string ProfileImage;//Selects from the different profile pictures
+
+        public string Email;
 
         public string FirstName;//Users first name
         public string LastName;//Users Last Name
@@ -276,14 +507,14 @@ namespace WpfTool
 
         public Settings PlayerSettings = new Settings();//Settings set to this player
 
-        public int IndexNumber = new int();//Number to retrieve the Username and Password
+        public int IndexNumber = 0;//Number to retrieve the Username and Password
 
         public string errorMessage = "";
 
         public System.DateTime CreationDate = new System.DateTime();//Date in which the user created this account
-        //public System.DateTime AccountCreationDate { get { return CreationDate; } }//Allows you to get the creation date, but cannot set it
+                                                                    //public System.DateTime AccountCreationDate { get { return CreationDate; } }//Allows you to get the creation date, but cannot set it
 
-        //INITILIZER:
+        #region Initilizer
         public User()
         {
             //Starts the user on a guest account
@@ -296,10 +527,8 @@ namespace WpfTool
         public User(int i)
         {
         }
-
-        //FUNCTIONS:
-
-
+        #endregion
+        #region Functions
         public bool LoadData(bool Guest)
         {
             
@@ -326,7 +555,7 @@ namespace WpfTool
                 {
                     if (!Guest)
                     {
-                        IndexNumber = i;
+                        //IndexNumber = i;
                         Age = 0;
                     }
                     //Check if the line is not the end of the account
@@ -370,6 +599,17 @@ namespace WpfTool
                                 }
                                 int.TryParse(Number, out int ActualNumber);//Try and convert the stupid string to a string
                                 PlayerSettings.CurrentTheme = (Settings.Theme)ActualNumber;//Convert and set the new int to a settings theme
+                                continue;
+                            }
+                            //Checks for What Email for the user
+                            else if (Lines[i][0].CompareTo('%') == 0)//Skips the password of the user
+                            {
+                                string email = "";//Create an empty string
+                                for (int j = 1; j < Lines[i].Length; j++)//Itterate through the rest of the line skipping the first char
+                                {
+                                    email += Lines[i][j];//Add each char to the end of the string
+                                }
+                                Controller.CurrentUser.Email = email;
                                 continue;
                             }
 
@@ -436,16 +676,17 @@ namespace WpfTool
         {
             string newstring = "*";//Starts a string with the password character
             for (int i = 0; i < CurrentForm.Length; i++)//Loops through the password
-                newstring += (char)((int)CurrentForm[i] + this.IndexNumber + 1 /*Offset*/ /*- this.CreationDate.Second*/);//Adds the encryption
+                newstring += (char)((int)CurrentForm[i] + 1 /*Offset*/ /*- this.CreationDate.Second*/);//Adds the encryption
             return newstring;//Returns the new string which is the password
         }
         public string DecryptPW(string CurrentForm)
         {
             string newstring = "*";//Starts a string with the password character
             for (int i = 1; i < CurrentForm.Length; i++)//Loops through the password
-                newstring += (char)((int)CurrentForm[i] - (this.IndexNumber + 1 /*Offset*/ /*- this.CreationDate.Second)*/));//Reverses the encryption
+                newstring += (char)((int)CurrentForm[i] - (1 /*Offset*/ /*- this.CreationDate.Second)*/));//Reverses the encryption
             return newstring;//Returns the new string which is the password
         }
+        #endregion
     }
     public class Settings
     {

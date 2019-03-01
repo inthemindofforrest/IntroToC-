@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Net.Mail;
+using System.Net;
 
 namespace WpfTool
 {
@@ -104,7 +106,46 @@ namespace WpfTool
             Unhidden.Visibility = Visibility.Hidden;
             Password.Visibility = Visibility.Visible;
         }
+        private void ForgotPassword(object sender, RoutedEventArgs e)
+        {
+            #region Password
+            string EmailPassword = /*"D8K@eM39v$By5C"*/ "Reddog05";
+            #endregion
 
+            #region EmailNonsense
+            string Greeting = ((DateTime.Now.Hour < 12) ? "Good Morning " : (DateTime.Now.Hour < 16 ? "Good Afternoon " : "Good Evening "));
+            string Name = "Bill";
+            string newPassword = "";
+
+            Random rand = new Random();
+            int NewPass = rand.Next(8,16);
+            for (int i = 0; i < NewPass; i++)
+                newPassword += (char)rand.Next(65, 90);
+            #endregion
+
+            MailMessage Msg = new MailMessage("mccarthy_forrest@outlook.com", /*Controller.CurrentUser.Email*/"mccarthy_forrest@yahoo.com");
+            SmtpClient client = new SmtpClient("smtp-mail.outlook.com",587);
+
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("mccarthy_forrest@outlook.com", EmailPassword);
+            client.EnableSsl = true;
+
+            Msg.Subject = ("Account Recovery from Mindful");
+            Msg.Body = (Greeting + Name + ",\n\n");
+            Msg.Body += ("\tWe have been notified that you have forgotten your password. In this case we have generated a new password for you to use.\n\n");
+            Msg.Body += ("\t\t<b>" + newPassword + "</b>\n\n");
+            Msg.Body += ("Thanks for contacting Mindful,\n Mindful Squad");
+
+            
+            try { client.Send(Msg); }
+            catch
+            {
+                Controller.CurrentUser.errorMessage = "Email could not be sent";
+                Window Errrrrr = new ErrorWindow();
+                Errrrrr.ShowDialog();
+            }
+        }
         void SetWindowTheme()
         {
 

@@ -11,8 +11,11 @@
     <Grid x:Name="GridSystem">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="Black" Offset="0"/>
-                <GradientStop Color="White" Offset="1"/>
+                <GradientStop Color="#FF4B4B4B" Offset="0.007"/>
+                <GradientStop Color="Gray" Offset="1"/>
+                <GradientStop Color="#FF515151" Offset="0.51"/>
+                <GradientStop Color="#FF747474" Offset="0.74"/>
+                <GradientStop Color="#FF3A3A3A" Offset="0.193"/>
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
@@ -20,9 +23,16 @@
             <ColumnDefinition Width="190*"/>
             <ColumnDefinition Width="25*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="NameField" Grid.Column="1" HorizontalAlignment="Left" Margin="0,15,0,0" TextWrapping="Wrap" Text="GUEST" VerticalAlignment="Top" Height="39" Width="166" FontSize="20" TextAlignment="Center"/>
-        <Button x:Name="SignInOut" Content="Sign In" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="79" Height="39" Click="SignInOut_Click"/>
-        <Button Content="PLAY" Grid.Column="1" HorizontalAlignment="Left" Margin="627,450,0,0" VerticalAlignment="Top" Width="133" Height="45" Click="RunApplication" FontSize="36" BorderBrush="#FF0E0000">
+        <TextBlock x:Name="NameField" Grid.Column="1" HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" Text="GUEST" VerticalAlignment="Top" Height="39" Width="156" FontSize="20" TextAlignment="Center">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF818181" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <Button x:Name="SignInOut" Content="Sign In" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="79" Height="39" Click="SignInOut_Click" Visibility="Hidden"/>
+        <Button x:Name="PlayButton" Content="PLAY" Grid.Column="1" HorizontalAlignment="Left" Margin="627,450,0,0" VerticalAlignment="Top" Width="133" Height="45" Click="RunApplication" FontSize="36" BorderBrush="#FF0E0000" Visibility="Hidden">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FF22FF00" Offset="0"/>
@@ -32,22 +42,34 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <ListBox x:Name="ListOfExe" Grid.Column="1" HorizontalAlignment="Left" Height="391" Margin="529,59,0,0" VerticalAlignment="Top" Width="231"/>
-        <Image x:Name="UserImage" Grid.Column="1" HorizontalAlignment="Left" Height="152" Margin="10,54,0,0" VerticalAlignment="Top" Width="156"/>
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="234" Margin="10,261,0,0" VerticalAlignment="Top" Width="440"/>
-        <Border x:Name="NameText" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="39" Margin="10,15,0,0" VerticalAlignment="Top" Width="156"/>
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="147" Margin="10,59,0,0" VerticalAlignment="Top" Width="156"/>
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="391" Margin="529,59,0,0" VerticalAlignment="Top" Width="231"/>
-        <TextBlock TextWrapping="Wrap" Text="Add a Program:" Margin="10,261,658,289" Grid.Column="1"/>
-        <TextBlock TextWrapping="Wrap" Text="Application Path:" Margin="10,306,658,244" Grid.Column="1"/>
-        <TextBlock TextWrapping="Wrap" Text="Application file:" Margin="10,352,658,198" Grid.Column="1"/>
-        <TextBlock TextWrapping="Wrap" Text="Nick Name:" Margin="10,408,658,142" Grid.Column="1"/>
-        <TextBox x:Name="NewPath" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="123,306,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="305" GotFocus="ClearText"/>
-        <TextBox x:Name="NewExe" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="123,352,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="305" GotFocus="ClearText"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="123,404,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="305" GotFocus="ClearText"/>
-        <Button Content="Confirm" Grid.Column="1" HorizontalAlignment="Left" Margin="186,450,0,0" VerticalAlignment="Top" Width="76" Click="SubmitApplication"/>
-        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="219,265,0,0" VerticalAlignment="Top" Width="43" Click="FileSelection"/>
-        <Button Content="Remove" Grid.Column="1" HorizontalAlignment="Left" Margin="529,450,0,0" VerticalAlignment="Top" Width="98" Height="45" Click="RemoveApplication" FontSize="24" BorderBrush="#FF0E0000">
+        <ListBox x:Name="ListOfExe" Grid.Column="1" HorizontalAlignment="Left" Height="391" Margin="529,59,0,0" VerticalAlignment="Top" Width="231" Visibility="Hidden">
+            <ListBox.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF818183" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </ListBox.Background>
+        </ListBox>
+        <Image x:Name="UserImage" Grid.Column="1" HorizontalAlignment="Left" Height="147" Margin="13,59,0,0" VerticalAlignment="Top" Width="153" />
+        <Border x:Name="AddProgramBorder" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="175" Margin="10,320,0,0" VerticalAlignment="Top" Width="440" Visibility="Hidden">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF818181" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <Border x:Name="NameText" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="39" Margin="10,15,0,0" VerticalAlignment="Top" Width="156" Visibility="Hidden"/>
+        <Border x:Name="ImageBorder" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="147" Margin="13,59,0,0" VerticalAlignment="Top" Width="147" Visibility="Hidden"/>
+        <Border x:Name="ListOfExeBorder" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="391" Margin="529,59,0,0" VerticalAlignment="Top" Width="231" Visibility="Hidden"/>
+        <TextBlock x:Name="AddprogramText" TextWrapping="Wrap" Text="Add a Program:" Margin="20,334,648,216" Grid.Column="1" Visibility="Hidden"/>
+        <TextBlock x:Name="PathText" TextWrapping="Wrap" Text="Application Path:" Margin="20,379,648,171" Grid.Column="1" Visibility="Hidden"/>
+        <TextBlock x:Name="FileNameText" TextWrapping="Wrap" Text="Application file:" Margin="20,425,648,125" Grid.Column="1" Visibility="Hidden"/>
+        <TextBox x:Name="NewPath" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="133,379,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="305" GotFocus="ClearText" Visibility="Hidden"/>
+        <TextBox x:Name="NewExe" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="133,425,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="305" GotFocus="ClearText" Visibility="Hidden"/>
+        <Button x:Name="ConfirmNewButton" Content="Confirm" Grid.Column="1" HorizontalAlignment="Left" Margin="186,450,0,0" VerticalAlignment="Top" Width="76" Click="SubmitApplication" Visibility="Hidden"/>
+        <Button x:Name="AddProgramButton" Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="229,338,0,0" VerticalAlignment="Top" Width="43" Click="FileSelection" Visibility="Hidden"/>
+        <Button x:Name="RemoveButton" Content="Remove" Grid.Column="1" HorizontalAlignment="Left" Margin="529,450,0,0" VerticalAlignment="Top" Width="98" Height="45" Click="RemoveApplication" FontSize="24" BorderBrush="#FF0E0000" Visibility="Hidden">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="Red" Offset="0"/>
@@ -57,6 +79,44 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
+        <Button x:Name="SettingsButton" Grid.ColumnSpan="2" Content="Settings" Grid.Column="1" HorizontalAlignment="Left" Margin="720,10,0,0" VerticalAlignment="Top" Width="50" Height="39" Click="SettingsPageSetter" Visibility="Hidden"/>
+        <Button x:Name="BackButton" Content="Back" Grid.Column="2" HorizontalAlignment="Left" Margin="0,15,0,0" VerticalAlignment="Top" Width="75" Height="49" Click="MainPageSetter"/>
+        <TextBlock x:Name="ChangePasswordText" Grid.Column="1" HorizontalAlignment="Left" Margin="0,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="46" Width="272" FontSize="22"><Run Text="Change password"/></TextBlock>
+        <TextBlock x:Name="CurrentPasswordText" Grid.Column="1" HorizontalAlignment="Left" Margin="20,444,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="171" FontSize="20"><Run Text="Current password:"/><LineBreak/><Run/></TextBlock>
+        <TextBox x:Name="CurrentPasswordField" Grid.Column="1" HorizontalAlignment="Left" Height="33" Margin="196,444,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162"/>
+        <TextBlock x:Name="NewPasswordText" Grid.Column="1" HorizontalAlignment="Left" Margin="20,482,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="171" FontSize="20" Text="New password:"/>
+        <TextBox x:Name="NewPasswordField" Grid.Column="1" HorizontalAlignment="Left" Height="33" Margin="196,482,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162"/>
+        <TextBlock x:Name="NewPasswordAgainText" Grid.Column="1" HorizontalAlignment="Left" Margin="20,520,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="33" Width="171" FontSize="20"><Run Text="New password:"/><LineBreak/><Run/></TextBlock>
+        <TextBox x:Name="NewPasswordAgainField" Grid.Column="1" HorizontalAlignment="Left" Height="33" Margin="196,520,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162"/>
+        <TextBlock x:Name="ThemeText" HorizontalAlignment="Left" Margin="0,324,0,0" TextWrapping="Wrap" Text="Theme:" VerticalAlignment="Top" Height="55" Width="133" FontSize="36" Grid.Column="1"/>
+        <Button x:Name="BlackTheme" Content="" HorizontalAlignment="Left" Margin="140,330,0,0" VerticalAlignment="Top" Width="41" Height="41" Click="ChangeToDarkTheme" Grid.Column="1">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="1"/>
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="WhiteTheme" Content="" HorizontalAlignment="Left" Margin="205,330,0,0" VerticalAlignment="Top" Width="41" Height="41" Background="White" Click="ChangeToLightTheme" Grid.Column="1"/>
+        <Button x:Name="BlueTheme" Content="" HorizontalAlignment="Left" Margin="270,330,0,0" VerticalAlignment="Top" Width="41" Height="41" Click="ChangeToBlueTheme" Grid.Column="1">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FF0046FF" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="1"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="1"/>
+                    <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <TextBlock x:Name="ProfilePicText" HorizontalAlignment="Left" Margin="229,59,0,0" TextWrapping="Wrap" Text="Profile Picture:" VerticalAlignment="Top" Height="55" Width="246" FontSize="36" Grid.Column="1"/>
+        <Button Content="Submit" Grid.Column="1" HorizontalAlignment="Left" Height="43" Margin="389,477,0,0" VerticalAlignment="Top" Width="112" Click="SubmitNewPassword"/>
+        <CheckBox x:Name="ShowPasswords" Content="Show Passwords" Grid.Column="1" Margin="196,410,396,131" FontSize="20" Checked="ShowPassword" Unchecked="HidePassword"/>
+        <PasswordBox x:Name="EncryptedPWCurrent" Grid.Column="1" HorizontalAlignment="Left" Margin="196,445,0,0" VerticalAlignment="Top" Width="162" Height="32" LostFocus="MovePasswords"/>
+        <PasswordBox x:Name="EncryptedPWNewFirst" Grid.Column="1" HorizontalAlignment="Left" Margin="196,483,0,0" VerticalAlignment="Top" Width="162" Height="32" LostFocus="MovePasswords"/>
+        <PasswordBox x:Name="EncryptedPWNewSecond" Grid.Column="1" HorizontalAlignment="Left" Margin="196,521,0,0" VerticalAlignment="Top" Width="162" Height="32" LostFocus="MovePasswords"/>
+        <TextBlock x:Name="PasswordChangedText" Grid.Column="1" HorizontalAlignment="Left" Margin="389,521,0,0" TextWrapping="Wrap" Text="Password Changed" VerticalAlignment="Top" Width="112" TextAlignment="Center" Foreground="Black"/>
 
     </Grid>
 </Window>
