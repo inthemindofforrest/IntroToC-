@@ -2,22 +2,11 @@
 Vector3Calculator.exe
 myWPFApp.exe
 [end]
-
-#alexi
-*mpohbqqmf
-@Alexi,Most
-$2/28/2019 3:52:20 PM
+#InTheMind
+*Qbttxpse23456
+@Forrest,McCarthy
+$2/28/2019 5:53:45 PM
 &Blue
 ^0
-C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\bin\Debug\Applications\,Vector3Calculator.exe
-C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\bin\Debug\Applications\,myWPFApp.exe
-[end]
-#Seeumliam
-
-@,
-$2/28/2019 4:39:05 PM
-&Blue
-^0
-C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\bin\Debug\Applications\,Vector3Calculator.exe
-C:\Users\s189069\source\repos\IntroToCSharp\WpfTool\WpfTool\bin\Debug\Applications\,myWPFApp.exe
+%mccarthy_forrest@yahoo.com
 [end]

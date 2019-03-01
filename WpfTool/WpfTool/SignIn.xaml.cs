@@ -111,40 +111,73 @@ namespace WpfTool
             #region Password
             string EmailPassword = /*"D8K@eM39v$By5C"*/ "Reddog05";
             #endregion
-
-            #region EmailNonsense
-            string Greeting = ((DateTime.Now.Hour < 12) ? "Good Morning " : (DateTime.Now.Hour < 16 ? "Good Afternoon " : "Good Evening "));
-            string Name = "Bill";
-            string newPassword = "";
-
-            Random rand = new Random();
-            int NewPass = rand.Next(8,16);
-            for (int i = 0; i < NewPass; i++)
-                newPassword += (char)rand.Next(65, 90);
-            #endregion
-
-            MailMessage Msg = new MailMessage("mccarthy_forrest@outlook.com", /*Controller.CurrentUser.Email*/"mccarthy_forrest@yahoo.com");
-            SmtpClient client = new SmtpClient("smtp-mail.outlook.com",587);
-
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("mccarthy_forrest@outlook.com", EmailPassword);
-            client.EnableSsl = true;
-
-            Msg.Subject = ("Account Recovery from Mindful");
-            Msg.Body = (Greeting + Name + ",\n\n");
-            Msg.Body += ("\tWe have been notified that you have forgotten your password. In this case we have generated a new password for you to use.\n\n");
-            Msg.Body += ("\t\t<b>" + newPassword + "</b>\n\n");
-            Msg.Body += ("Thanks for contacting Mindful,\n Mindful Squad");
-
-            
-            try { client.Send(Msg); }
-            catch
+            while (true)
             {
-                Controller.CurrentUser.errorMessage = "Email could not be sent";
-                Window Errrrrr = new ErrorWindow();
-                Errrrrr.ShowDialog();
+                #region EmailNonsense
+                string Greeting = ((DateTime.Now.Hour < 12) ? "Good Morning " : (DateTime.Now.Hour < 16 ? "Good Afternoon " : "Good Evening "));
+                string Name = GetInfo().Split(',')[0];
+                string Email = GetInfo().Split(',')[1];
+                string newPassword = "";
+
+                Random rand = new Random();
+                int NewPass = rand.Next(8, 16);
+                for (int i = 0; i < NewPass; i++)
+                    newPassword += (char)rand.Next(65, 90);
+                #endregion
+
+                MailMessage Msg = new MailMessage("mccarthy_forrest@outlook.com", Email);
+                SmtpClient client = new SmtpClient("smtp-mail.outlook.com", 587);
+
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("mccarthy_forrest@outlook.com", EmailPassword);
+                client.EnableSsl = true;
+
+                Msg.Subject = ("Account Recovery from Mindful");
+                Msg.Body = (Greeting + Name + ",\n\n");
+                Msg.Body += ("\tWe have been notified that you have forgotten your password. In this case we have generated a new password for you to use.\n\n");
+                Msg.Body += ("\t\t<b>" + newPassword + "</b>\n\n");
+                Msg.Body += ("Thanks for contacting Mindful,\n Mindful Squad");
+
+
+                try { client.Send(Msg); }
+                catch
+                {
+                    Controller.CurrentUser.errorMessage = "Email could not be sent";
+                    Window Errrrrr = new ErrorWindow();
+                    Errrrrr.ShowDialog();
+                }
             }
+        }
+
+        string GetInfo()
+        {
+            string SaveFileLocation = @"SaveFile.txt";//Location where the save file is stored
+            string[] Lines = System.IO.File.ReadAllLines(SaveFileLocation);//Retrieve the lines from the text file
+
+            string Info = "";
+            for(int i = 0; i < Lines.Length; i++)
+                if(Lines[i].ToLower().CompareTo("#" + Username.Text.ToLower()) == 0)
+                {
+                    while(Lines[++i] != "[end]")
+                    {
+                        if (Lines[i][0].CompareTo('@') == 0)
+                            for (int j = 1; j < Lines[i].Length; j++)
+                                if (Lines[i][j].CompareTo(',') != 0)
+                                    Info += Lines[i][j];
+                                else
+                                {
+                                    Info += ",";
+                                    break;
+                                }
+                        
+                        if (Lines[i][0].CompareTo('%') == 0)
+                            for (int j = 1; j < Lines[i].Length; j++)
+                                    Info += Lines[i][j];
+                    }
+                }
+
+            return Info;
         }
         void SetWindowTheme()
         {
